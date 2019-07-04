@@ -16,21 +16,19 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Border x:Name="TopBarBorder" BorderBrush="#FFF7F3F3" Height="56" VerticalAlignment="Top" Background="#00D3D3D3" BorderThickness="5,5,5,5" Opacity="0.5" FocusVisualPrimaryBrush="White" Margin="0,0,0,584" MinWidth="360">
-            
-        </Border>
+        <Border x:Name="TopBarBorder" BorderBrush="#FFF7F3F3" Height="56" VerticalAlignment="Top" Background="#00D3D3D3" BorderThickness="5,5,5,5" Opacity="0.5" FocusVisualPrimaryBrush="White" MinWidth="360" Padding="0,0,1,0"/>
 
-        <TextBlock x:Name="CurrentTimeText" HorizontalAlignment="Right" Height="32" Margin="0,16,10,0" Text="99:99 PM" TextWrapping="NoWrap" VerticalAlignment="Top" Width="102" SelectionChanged="TextBlock_SelectionChanged" Foreground="#FF1DFF00" FontSize="20" FontFamily="Arial" FontStyle="Italic" TextAlignment="Center" FlowDirection="RightToLeft" Opacity="0.8">
+        <TextBlock x:Name="CurrentTimeText" HorizontalAlignment="Right" Height="32" Margin="0,16,10,0" Text="99:99 PM" TextWrapping="NoWrap" VerticalAlignment="Top" Width="102" Foreground="#FF1DFF00" FontSize="20" FontFamily="Arial" FontStyle="Italic" TextAlignment="Center" FlowDirection="RightToLeft" Opacity="0.8">
             <TextBlock.FocusVisualPrimaryBrush>
                 <SolidColorBrush Color="#FFF7F7F7" Opacity="1"/>
             </TextBlock.FocusVisualPrimaryBrush>
         </TextBlock>
 
-        <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" SelectionChanged="PersonAndDate_SelectionChanged" FontFamily="Segoe UI" FontStyle="Italic" Foreground="White"/>
+        <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic" Foreground="White"/>
 
         <CheckBox x:Name="TaskCheckBox" Content="TaskCheckBox" Height="31" Margin="10,120,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked"/>
 
-        <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
+        <Button x:Name="AddTaskButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddTaskButton_Click" FontSize="20" Padding="0,0,0,0">
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -39,7 +37,7 @@
             </Button.Foreground>
         </Button>
 
-        <TextBlock x:Name="AddTaskText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="AddTask" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="97" SelectionChanged="TextBlock_SelectionChanged" TextAlignment="Center" FontSize="20">
+        <TextBlock x:Name="AddTaskText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="AddTask" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="97" TextAlignment="Center" FontSize="20">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -63,6 +61,7 @@
         <Button x:Name="AlarmButton" Height="32" Margin="200,12,0,0" VerticalAlignment="Top" Width="48" Click="AlarmButton_Click" FontFamily="Segoe MDL2 Assets" Foreground="White">
             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
         </Button>
+        <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340"/>
 
     </Grid>
 </Page>

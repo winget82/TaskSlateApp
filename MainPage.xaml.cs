@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,21 +23,54 @@ namespace TaskSlateApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        //Defaults
+        
+        //Default Task
+        public static Task defaultTask = new Task("Sweep", false);
+
+        //temporary
+        public static Task defaultTask2 = new Task("Dishes", false);
+
+        //Default Task List
+        public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2 };
+
+        //Default User
+        public static Person defaultPerson = new Person("default", defaultTaskList);
+        public static List<Person> slateUsers = new List<Person>() { defaultPerson };
+        
+
         public MainPage()
         {
             this.InitializeComponent();
-            
-        }
+            TaskCheckBox.Content = defaultTask.TaskName.ToString();
 
-        //task check boxes need to be generated dynamically, see notes at bottom of this file
+            //the code below adds a checkbox for each task in the tasklist, but settings need setup
+            //for spacing font, size, etc. utilize STACKPANEL for this
+            
+            foreach (Task task in defaultTaskList)
+            {
+                CheckBox checkbox = new CheckBox();
+                checkbox.Name = task.TaskName;
+                checkbox.Content = task.TaskName;
+                checkbox.Height = 31;
+                checkbox.FontFamily = new FontFamily("Segoe UI");
+                checkbox.FontSize = 20;
+                checkbox.Checked += TaskCheckBox_Checked;
+                
+                ButtonStackPanel.Children.Add(checkbox);
+                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+            }
+        }
+        
+        //task check boxes need to be generated dynamically
 
         //person will be an object, and the person at top of screen will be populated by accessing that person's properties
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
             //this is for addbutton
             //this will generate a text box prompt for typing the name of task
-            //and a box / picker for setting time of alarm
+            //and a box / picker for setting time of alarm            
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -53,6 +87,7 @@ namespace TaskSlateApp
         private void PersonButton_Click(object sender, RoutedEventArgs e)
         {
             //What happens when PersonButton is clicked?
+            //screen changes to show user buttons from a List
         }
 
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
@@ -64,6 +99,16 @@ namespace TaskSlateApp
         {
             //What happens when AlarmButton is clicked?
         }
+
+        public void showTasks()
+        {
+            //for each task in task list for current person
+            //CheckBox taskCheckBox = new CheckBox();
+            //configure where checkbox will be
+            //see https://www.youtube.com/watch?time_continue=224&v=ohcdseuil5E for ideas
+            //see code under MainPage also
+        }
+
     }
 
     public class Person
@@ -105,7 +150,13 @@ namespace TaskSlateApp
 //dynamically add:
 //https://www.youtube.com/watch?time_continue=158&v=ohcdseuil5E
 
-//icons
-//https://www.technical-recipes.com/2017/how-to-use-resource-files-in-your-csharp-project/
+//dynamically add buttons**
+//https://stackoverflow.com/questions/42306705/programmatically-add-buttons-to-a-uwp-app
+//https://stackoverflow.com/questions/6406868/c-sharp-add-controls-to-panel-in-a-loop
+
 //checkbox styling
 //https://stackoverflow.com/questions/49774305/how-to-change-uwp-checkbox-text-color
+
+//Will have to be some initial page to make a user / edit a user - could start with "Default"
+//issues with static keyword
+//https://stackoverflow.com/questions/13162437/how-to-add-the-objects-of-a-class-in-a-static-list-property-of-same-class
