@@ -137,6 +137,38 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-128.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-16.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-24.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-256.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-32.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-48.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-512.ico" />
+    <Content Include="Resources\Icons\Alarm\appointment-reminders-64.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-128.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-16.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-24.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-256.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-32.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-48.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-512.ico" />
+    <Content Include="Resources\Icons\Calendar\calendar-9-64.ico" />
+    <Content Include="Resources\Icons\Home\home-7-128.ico" />
+    <Content Include="Resources\Icons\Home\home-7-16.ico" />
+    <Content Include="Resources\Icons\Home\home-7-24.ico" />
+    <Content Include="Resources\Icons\Home\home-7-256.ico" />
+    <Content Include="Resources\Icons\Home\home-7-32.ico" />
+    <Content Include="Resources\Icons\Home\home-7-48.ico" />
+    <Content Include="Resources\Icons\Home\home-7-512.ico" />
+    <Content Include="Resources\Icons\Home\home-7-64.ico" />
+    <Content Include="Resources\Icons\Person\user-128.ico" />
+    <Content Include="Resources\Icons\Person\user-16.ico" />
+    <Content Include="Resources\Icons\Person\user-24.ico" />
+    <Content Include="Resources\Icons\Person\user-256.ico" />
+    <Content Include="Resources\Icons\Person\user-32.ico" />
+    <Content Include="Resources\Icons\Person\user-48.ico" />
+    <Content Include="Resources\Icons\Person\user-512.ico" />
+    <Content Include="Resources\Icons\Person\user-64.ico" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -153,6 +185,7 @@
       <Version>6.2.8</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
