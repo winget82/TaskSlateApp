@@ -44,6 +44,26 @@ namespace TaskSlateApp
             //Here is what happens when TaskCheckBox_Checked
             //Change font to scratched out font
         }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            //What happens when HomeButton is clicked?
+        }
+
+        private void PersonButton_Click(object sender, RoutedEventArgs e)
+        {
+            //What happens when PersonButton is clicked?
+        }
+
+        private void CalendarButton_Click(object sender, RoutedEventArgs e)
+        {
+            //What happens when CalendarButton is clicked?
+        }
+
+        private void AlarmButton_Click(object sender, RoutedEventArgs e)
+        {
+            //What happens when AlarmButton is clicked?
+        }
     }
 
     public class Person
@@ -87,3 +107,5 @@ namespace TaskSlateApp
 
 //icons
 //https://www.technical-recipes.com/2017/how-to-use-resource-files-in-your-csharp-project/
+//checkbox styling
+//https://stackoverflow.com/questions/49774305/how-to-change-uwp-checkbox-text-color
