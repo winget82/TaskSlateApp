@@ -16,7 +16,8 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Border x:Name="TopBarBorder" BorderBrush="#FFF7F3F3" Height="56" VerticalAlignment="Top" Background="#00D3D3D3" BorderThickness="5,5,5,5" Opacity="0.5" FocusVisualPrimaryBrush="White" Margin="0,0,0,584"/>
-        <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" Foreground="#FFF7F3F3" SelectionChanged="PersonAndDate_SelectionChanged" FontFamily="Segoe UI" FontStyle="Italic"/>
+
+        <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" SelectionChanged="PersonAndDate_SelectionChanged" FontFamily="Segoe UI" FontStyle="Italic" Foreground="White"/>
         <CheckBox x:Name="TaskCheckBox" Content="TaskCheckBox" Height="31" Margin="10,144,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked"/>
         <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
             <Button.Foreground>
@@ -34,8 +35,18 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <CheckBox Content="CheckBox" Margin="615,405,0,0" VerticalAlignment="Top"/>
-
+        <Button x:Name="HomeButton" Height="32" Margin="22,12,0,0" VerticalAlignment="Top" Width="48" Foreground="White">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;" HorizontalAlignment="Left" Width="20"/>
+        </Button>
+        <Button x:Name="PersonButton" Height="32" Margin="70,12,0,0" VerticalAlignment="Top" Width="48" Foreground="#FFFBFBFB">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+        </Button>
+        <Button x:Name="CalendarButton" Height="32" Margin="118,12,0,0" VerticalAlignment="Top" Width="48" Foreground="White">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE787;"/>
+        </Button>
+        <Button x:Name="AlarmButton" Height="32" Margin="166,12,0,0" VerticalAlignment="Top" Width="48" Click="AlarmButton_Click" FontFamily="Segoe MDL2 Assets" Foreground="White">
+            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
+        </Button>
     </Grid>
 </Page>
 <!--right click - layout - fill horizontally-->

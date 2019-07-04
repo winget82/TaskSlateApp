@@ -84,3 +84,6 @@ namespace TaskSlateApp
 
 //dynamically add:
 //https://www.youtube.com/watch?time_continue=158&v=ohcdseuil5E
+
+//icons
+//https://www.technical-recipes.com/2017/how-to-use-resource-files-in-your-csharp-project/
