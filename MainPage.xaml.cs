@@ -23,27 +23,31 @@ namespace TaskSlateApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //Defaults
-        
-        //Default Task
+        //TEMPORARY DEFAULTS
+
+        //TEMPORARY Tasks
         public static Task defaultTask = new Task("Sweep", false);
-
-        //temporary
         public static Task defaultTask2 = new Task("Dishes", false);
+        public static Task defaultTask3 = new Task("Bathroom", false);
+        public static Task defaultTask4 = new Task("Make Bed", false);
 
-        //Default Task List
-        public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2 };
+        //TEMPORARY Task List
+        public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
 
-        //Default User
-        public static Person defaultPerson = new Person("default", defaultTaskList);
-        public static List<Person> slateUsers = new List<Person>() { defaultPerson };
+        //TEMPORARY Persons / Users
+        public static Person defaultPerson = new Person("default1", defaultTaskList);
+        public static Person defaultPerson2 = new Person("default2", defaultTaskList);
+        public static Person defaultPerson3 = new Person("default3", defaultTaskList);
+        public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
         
 
         public MainPage()
         {
             this.InitializeComponent();
-            TaskCheckBox.Content = defaultTask.TaskName.ToString();
-
+            //TaskCheckBox.Content = defaultTask.TaskName.ToString();
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
+            
             //the code below adds a checkbox for each task in the tasklist, but settings need setup
             //for spacing font, size, etc. utilize STACKPANEL for this
             
@@ -57,7 +61,7 @@ namespace TaskSlateApp
                 checkbox.FontSize = 20;
                 checkbox.Checked += TaskCheckBox_Checked;
                 
-                ButtonStackPanel.Children.Add(checkbox);
+                CheckBoxStackPanel.Children.Add(checkbox);
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
             }
         }
@@ -81,22 +85,43 @@ namespace TaskSlateApp
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
             //What happens when HomeButton is clicked?
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
+
             //What happens when PersonButton is clicked?
             //screen changes to show user buttons from a List
+            foreach (Person person in slateUsers)
+            {
+                Button button = new Button();
+                button.Name = person.Name;
+                button.Content = person.Name;
+                button.Height = 32;
+                button.MinWidth = 340;
+                button.Foreground = new SolidColorBrush(Colors.White);
+                //button.HorizontalAlignment = new Stretch
+                ButtonStackPanel.Children.Add(button);
+                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+            }
         }
 
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
             //What happens when CalendarButton is clicked?
         }
 
         private void AlarmButton_Click(object sender, RoutedEventArgs e)
         {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
             //What happens when AlarmButton is clicked?
         }
 
@@ -138,6 +163,7 @@ namespace TaskSlateApp
             IsComplete = isCompleted;
         }
     }
+
 }
 
 //dynamically adding checkboxes:

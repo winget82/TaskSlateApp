@@ -26,8 +26,6 @@
 
         <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic" Foreground="White"/>
 
-        <CheckBox x:Name="TaskCheckBox" Content="TaskCheckBox" Height="31" Margin="10,120,10,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked"/>
-
         <Button x:Name="AddTaskButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddTaskButton_Click" FontSize="20" Padding="0,0,0,0">
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -61,7 +59,21 @@
         <Button x:Name="AlarmButton" Height="32" Margin="200,12,0,0" VerticalAlignment="Top" Width="48" Click="AlarmButton_Click" FontFamily="Segoe MDL2 Assets" Foreground="White">
             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
         </Button>
-        <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340"/>
+        
+        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+            <CheckBox x:Name="TaskCheckBox" Content="Task1" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked"/>
+        </StackPanel>
+        
+        <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+            <Button Content="Button" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF033209" Offset="1"/>
+                        <GradientStop Color="#FFB4B3B3" Offset="0"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </StackPanel>
 
     </Grid>
 </Page>
