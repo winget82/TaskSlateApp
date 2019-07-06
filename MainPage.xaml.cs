@@ -20,26 +20,32 @@ using Windows.UI.Xaml.Navigation;
 namespace TaskSlateApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// An app for keeping track of tasks to do for one to many people on the same app, no login required
     /// </summary>
     public sealed partial class MainPage : Page
     {
         //TEMPORARY DEFAULTS
 
         //TEMPORARY Tasks
+        
         public static Task defaultTask = new Task("Sweep", false);
         public static Task defaultTask2 = new Task("Dishes", false);
         public static Task defaultTask3 = new Task("Bathroom", false);
         public static Task defaultTask4 = new Task("Make Bed", false);
+        
 
         //TEMPORARY Task List
         public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
+        //public static List<Task> defaultTaskList = new List<Task>() { };
 
-        //TEMPORARY Persons / Users
-        public static Person defaultPerson = new Person("default1", defaultTaskList);
+        //Default Person
+        public static Person defaultPerson = new Person("Default Person", defaultTaskList);
+        
         public static Person defaultPerson2 = new Person("default2", defaultTaskList);
         public static Person defaultPerson3 = new Person("default3", defaultTaskList);
         public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
+        
+        //public static List<Person> slateUsers = new List<Person>() { defaultPerson };
 
         public static string activePerson = defaultPerson.Name.ToString();      
         
@@ -52,47 +58,25 @@ namespace TaskSlateApp
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
             dtClockTime.Start();
 
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
-
+            //person will be an object, and the person at top of screen will be populated by accessing that person's properties
             PersonAndDate.Text = activePerson + " - " + DateTime.Now.ToString("MM/dd/yyyy");
 
-            //Start off with default person - who could then be renamed by rename button
+            ShowTaskList();
+
+            //Start off with default person - if no person exists upon load during start of app
+            //- who could then be renamed by rename button
             //Add button to person menu to rename person, add button to person menu to delete person
             //- make unable to delete person if only one person remains
-
-            //the code below adds a checkbox for each task in the tasklist
-            foreach (Task task in defaultTaskList)
-            {
-                CheckBox checkbox = new CheckBox();
-                checkbox.Name = task.TaskName;
-                checkbox.Content = task.TaskName;
-                checkbox.Height = 31;
-                checkbox.FontFamily = new FontFamily("Segoe UI");
-                checkbox.FontSize = 20;
-                checkbox.Checked += TaskCheckBox_Checked;
-                
-                CheckBoxStackPanel.Children.Add(checkbox);
-                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
-                //in the styling
-            }
+            
         }
-
-        //task check boxes need to be generated dynamically
-
-        //person will be an object, and the person at top of screen will be populated by accessing that person's properties
         
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        private void ShowTaskList()
         {
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
-            AddButton.Visibility = Visibility.Visible;
-            AddButtonText.Visibility = Visibility.Visible;
+            //task check boxes need to be generated dynamically
+            //the code below adds a checkbox for each task in the tasklist
+            ClearScreen();
+            ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
-            RemoveButton.Visibility = Visibility.Visible;
-            RemoveButtonText.Visibility = Visibility.Visible;
             RemoveButtonText.Text = "Remove Task";
 
             foreach (Task task in defaultTaskList)
@@ -108,19 +92,23 @@ namespace TaskSlateApp
                 checkbox.Checked += TaskCheckBox_Checked;
 
                 CheckBoxStackPanel.Children.Add(checkbox);
+
+                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+                //in the styling
             }
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTaskList();
+            
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
         {
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
-            AddButton.Visibility = Visibility.Visible;
-            AddButtonText.Visibility = Visibility.Visible;
+            ClearScreen();
+            ShowAddRemoveButtons();
             AddButtonText.Text = "Add Person";
-            RemoveButton.Visibility = Visibility.Visible;
-            RemoveButtonText.Visibility = Visibility.Visible;
             RemoveButtonText.Text = "Remove Person";
 
             foreach (Person person in slateUsers)
@@ -141,15 +129,35 @@ namespace TaskSlateApp
             }
         }
 
+        private void ClearScreen()
+        {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+        }
+
+        private void CollapseAddRemoveButtons()
+        {
+            AddButton.Visibility = Visibility.Collapsed;
+            AddButtonText.Visibility = Visibility.Collapsed;
+            RemoveButton.Visibility = Visibility.Collapsed;
+            RemoveButtonText.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowAddRemoveButtons()
+        {
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
+            RemoveButton.Visibility = Visibility.Visible;
+            RemoveButtonText.Visibility = Visibility.Visible;
+        }
+
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Visible;
-            AddButton.Visibility = Visibility.Collapsed;
-            AddButtonText.Visibility = Visibility.Collapsed;
-            RemoveButton.Visibility = Visibility.Collapsed;
-            RemoveButtonText.Visibility = Visibility.Collapsed;
+            CollapseAddRemoveButtons();
         }
 
         private void AlarmButton_Click(object sender, RoutedEventArgs e)
@@ -157,10 +165,7 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
-            AddButton.Visibility = Visibility.Collapsed;
-            AddButtonText.Visibility = Visibility.Collapsed;
-            RemoveButton.Visibility = Visibility.Collapsed;
-            RemoveButtonText.Visibility = Visibility.Collapsed;
+            CollapseAddRemoveButtons();
         }
 
         private void DtClockTime_Tick(object sender, object e)
@@ -198,12 +203,14 @@ namespace TaskSlateApp
     {
         public string Name { get; set; }
         public List<Task> Tasks;
+        public bool IsActivePerson { get; set; }
         //AlarmSetting
 
-        public Person(string name, List<Task> tasks)
+        public Person(string name, List<Task> tasks, bool activePerson=false)
         {
             Name = name;
-            Tasks = tasks;
+            Tasks = tasks;//set constructor to generate a new empty task list
+            IsActivePerson = activePerson;
             //AlarmSetting
         }
     }
@@ -215,7 +222,7 @@ namespace TaskSlateApp
         public bool IsComplete { get; set; }
         //recurrence could add new instances of object?
 
-        public Task(string taskName, bool isCompleted)
+        public Task(string taskName, bool isCompleted=false)
         {
             TaskName = taskName;
             IsComplete = isCompleted;
@@ -223,20 +230,6 @@ namespace TaskSlateApp
     }
 
 }
-
-//dynamically adding checkboxes:
-//https://stackoverflow.com/questions/15005333/dynamically-adding-checkboxes-to-a-windows-form-only-shows-one-checkbox
-//https://www.youtube.com/watch?v=TfE2vcDy0G8
-
-//dynamically remove something from wup layout
-//https://www.youtube.com/watch?time_continue=2&v=RB4caGumBiU
-
-//dynamically add:
-//https://www.youtube.com/watch?time_continue=158&v=ohcdseuil5E
-
-//dynamically add buttons**
-//https://stackoverflow.com/questions/42306705/programmatically-add-buttons-to-a-uwp-app
-//https://stackoverflow.com/questions/6406868/c-sharp-add-controls-to-panel-in-a-loop
 
 //checkbox styling
 //https://stackoverflow.com/questions/49774305/how-to-change-uwp-checkbox-text-color
