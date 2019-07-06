@@ -24,31 +24,8 @@ namespace TaskSlateApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //TEMPORARY DEFAULTS
-
-        //TEMPORARY Tasks
         
-        public static Task defaultTask = new Task("Sweep", false);
-        public static Task defaultTask2 = new Task("Dishes", false);
-        public static Task defaultTask3 = new Task("Bathroom", false);
-        public static Task defaultTask4 = new Task("Make Bed", false);
-        
-
-        //TEMPORARY Task List
-        public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
-        //public static List<Task> defaultTaskList = new List<Task>() { };
-
-        /*
-        //Default Person
-        public static Person defaultPerson = new Person("Default Person", defaultTaskList);
-        
-        public static Person defaultPerson2 = new Person("default2", defaultTaskList);
-        public static Person defaultPerson3 = new Person("default3", defaultTaskList);
-        public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
-        */
-        public static List<Person> slateUsers = new List<Person>() { };
-
-        //public static string activePerson = defaultPerson.Name.ToString();      
+        public static List<Person> slateUsers = new List<Person>() { };    
         
         public MainPage()
         {
@@ -64,15 +41,25 @@ namespace TaskSlateApp
             Person defaultPerson = new Person("Default Person");
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
-            
-            ShowTaskList();
-           
+
+            Task defaultTask = new Task("Sweep", false);
+            Task defaultTask2 = new Task("Dishes", false);
+            Task defaultTask3 = new Task("Bathroom", false);
+            Task defaultTask4 = new Task("Make Bed", false);
+
+            List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
+
+            //Add default task list to task list in person object
+            defaultPerson.Tasks.AddRange(defaultTaskList);
+
+            ShowTaskList(defaultPerson.Tasks);
+
             //Add button to person menu to rename person, add button to person menu to delete person
             //- make unable to delete person if only one person remains
-            
+
         }
-        
-        private void ShowTaskList()
+
+        private void ShowTaskList(List<Task> Tasks)//need to pass active person.tasks in here
         {
             //task check boxes need to be generated dynamically
             //the code below adds a checkbox for each task in the tasklist
@@ -81,7 +68,7 @@ namespace TaskSlateApp
             AddButtonText.Text = "Add Task";
             RemoveButtonText.Text = "Remove Task";
 
-            foreach (Task task in defaultTaskList)
+            foreach (Task task in Tasks)
             {
                 CheckBox checkbox = new CheckBox();
                 checkbox.Name = task.TaskName;
@@ -100,9 +87,17 @@ namespace TaskSlateApp
             }
         }
 
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        public void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowTaskList();        
+            
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    ShowTaskList(person.Tasks);
+                }
+            }
+            
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
@@ -207,6 +202,22 @@ namespace TaskSlateApp
             //this is for the remove button
             //this will let you select with text/button to remove
             //this will remove any checked tasks showing currently
+        }
+
+        private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            //if the name of person on button matches the name of person in person list, that person is active
+            //how do you get the name of a button generated dynamically in order to access its properties?
+            /*
+            foreach (Person person in slateUsers)
+            {
+                //https://stackoverflow.com/questions/22591756/get-values-from-dynamically-added-textboxes-asp-net-c-sharp
+                if (Button..ToString == person.Name.ToString())//(name of person on button clicked matches the name of a person in person list)
+                {
+                    person.IsActivePerson = true;
+                }
+            }
+            */
         }
     }
 

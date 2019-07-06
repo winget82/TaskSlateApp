@@ -74,7 +74,7 @@
 
         <!--Stack panel for person list-->
         <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
-            <Button Style="{StaticResource PersonButtonStyle}" Content="Button" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20">
+            <Button Style="{StaticResource PersonButtonStyle}" Content="Button" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20" Click="ActiveUserButton_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF033209" Offset="1"/>
