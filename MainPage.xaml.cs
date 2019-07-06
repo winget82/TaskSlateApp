@@ -38,16 +38,17 @@ namespace TaskSlateApp
         public static List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
         //public static List<Task> defaultTaskList = new List<Task>() { };
 
+        /*
         //Default Person
         public static Person defaultPerson = new Person("Default Person", defaultTaskList);
         
         public static Person defaultPerson2 = new Person("default2", defaultTaskList);
         public static Person defaultPerson3 = new Person("default3", defaultTaskList);
         public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
-        
-        //public static List<Person> slateUsers = new List<Person>() { defaultPerson };
+        */
+        public static List<Person> slateUsers = new List<Person>() { };
 
-        public static string activePerson = defaultPerson.Name.ToString();      
+        //public static string activePerson = defaultPerson.Name.ToString();      
         
         public MainPage()
         {
@@ -58,13 +59,14 @@ namespace TaskSlateApp
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
             dtClockTime.Start();
 
-            //person will be an object, and the person at top of screen will be populated by accessing that person's properties
-            PersonAndDate.Text = activePerson + " - " + DateTime.Now.ToString("MM/dd/yyyy");
-
-            ShowTaskList();
-
             //Start off with default person - if no person exists upon load during start of app
             //- who could then be renamed by rename button
+            Person defaultPerson = new Person("Default Person");
+            slateUsers.Add(defaultPerson);
+            defaultPerson.IsActivePerson = true;
+            
+            ShowTaskList();
+           
             //Add button to person menu to rename person, add button to person menu to delete person
             //- make unable to delete person if only one person remains
             
@@ -100,8 +102,7 @@ namespace TaskSlateApp
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowTaskList();
-            
+            ShowTaskList();        
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
@@ -171,6 +172,16 @@ namespace TaskSlateApp
         private void DtClockTime_Tick(object sender, object e)
         {
             CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
+
+            //if person in person list is active person than put name at top of screen         
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                }
+            }
+                
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -206,10 +217,10 @@ namespace TaskSlateApp
         public bool IsActivePerson { get; set; }
         //AlarmSetting
 
-        public Person(string name, List<Task> tasks, bool activePerson=false)
+        public Person(string name, List<Task> tasks = null, bool activePerson=false)
         {
             Name = name;
-            Tasks = tasks;//set constructor to generate a new empty task list
+            Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
             //AlarmSetting
         }
