@@ -94,6 +94,12 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
+            
+        </StackPanel>
+        
+        <!--Stack panel for calendar-->
+        <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+            <CalendarView x:Name="TaskSlateCalendar" Height="290" Width="342" Background="Black" OutOfScopeForeground="White" SelectedForeground="#FF00D71D" PressedForeground="#FF00D71D" CalendarItemForeground="White" OutOfScopeBackground="Black" CalendarItemBackground="Black" BlackoutForeground="#FF27D700" Foreground="#CCFFFFFF" SelectedBorderBrush="#FF00D71D" SelectedPressedBorderBrush="#FF27D700" TodayForeground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FF27D700" FocusBorderBrush="#FF27D700" SelectedHoverBorderBrush="#FF27D700"/>
         </StackPanel>
 
     </Grid>

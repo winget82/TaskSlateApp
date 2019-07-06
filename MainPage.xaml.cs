@@ -47,10 +47,11 @@ namespace TaskSlateApp
             //TaskCheckBox.Content = defaultTask.TaskName.ToString();
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
-            
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
             //the code below adds a checkbox for each task in the tasklist, but settings need setup
             //for spacing font, size, etc. utilize STACKPANEL for this
-            
+
             foreach (Task task in defaultTaskList)
             {
                 CheckBox checkbox = new CheckBox();
@@ -87,6 +88,8 @@ namespace TaskSlateApp
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
             //What happens when HomeButton is clicked?
         }
 
@@ -94,6 +97,7 @@ namespace TaskSlateApp
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
 
             //What happens when PersonButton is clicked?
             //screen changes to show user buttons from a List
@@ -117,6 +121,8 @@ namespace TaskSlateApp
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Visible;
+
             //What happens when CalendarButton is clicked?
         }
 
@@ -124,6 +130,8 @@ namespace TaskSlateApp
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
             //What happens when AlarmButton is clicked?
         }
 
