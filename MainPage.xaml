@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <!--Set defaults for styling-->
-        
+
         <!--This affects all buttons, NOT what I want-->
         <Style TargetType="Button" x:Key="PersonButtonStyle">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -23,9 +23,9 @@
             <GradientStop Color="#FF033209" Offset="1"/>
             <GradientStop Color="#FFB4B3B3" Offset="0"/>
         </LinearGradientBrush>
-        
+
     </Page.Resources>
-    
+
     <Grid x:Name="BackgroundSlate">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -43,24 +43,6 @@
         </TextBlock>
 
         <TextBlock x:Name="PersonAndDate" Height="56" Margin="0,61,0,0" Text="Person - Date" TextWrapping="Wrap" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="24" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic" Foreground="White"/>
-
-        <Button x:Name="AddTaskButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddTaskButton_Click" FontSize="20" Padding="0,0,0,0">
-            <Button.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF03FF23" Offset="0"/>
-                </LinearGradientBrush>
-            </Button.Foreground>
-        </Button>
-
-        <TextBlock x:Name="AddTaskText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="AddTask" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="97" TextAlignment="Center" FontSize="20">
-            <TextBlock.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF03FF23" Offset="0"/>
-                </LinearGradientBrush>
-            </TextBlock.Foreground>
-        </TextBlock>
 
         <!--Top Bar Buttons-->
         <Button x:Name="HomeButton" Height="32" Margin="20,12,0,0" VerticalAlignment="Top" Width="48" Foreground="White" Click="HomeButton_Click">
@@ -94,14 +76,34 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            
+
         </StackPanel>
-        
+
         <!--Stack panel for calendar-->
         <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <CalendarView x:Name="TaskSlateCalendar" Height="290" Width="342" Background="Black" OutOfScopeForeground="White" SelectedForeground="#FF00D71D" PressedForeground="#FF00D71D" CalendarItemForeground="White" OutOfScopeBackground="Black" CalendarItemBackground="Black" BlackoutForeground="#FF27D700" Foreground="#CCFFFFFF" SelectedBorderBrush="#FF00D71D" SelectedPressedBorderBrush="#FF27D700" TodayForeground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FF27D700" FocusBorderBrush="#FF27D700" SelectedHoverBorderBrush="#FF27D700"/>
         </StackPanel>
 
+        <!--Grid for add button can NOT get to collapse or clear???-->
+        <Grid x:Name="AddButtonGrid" HorizontalAlignment="Center" Height="66" Margin="0,564,0,0" VerticalAlignment="Top" Width="340"/>
+        <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
+            <Button.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF03FF23" Offset="0"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+
+        <TextBlock x:Name="AddButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="AddTask" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="192" TextAlignment="Left" FontSize="20" FontFamily="Segoe UI">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF03FF23" Offset="0"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
     </Grid>
+
 </Page>
 

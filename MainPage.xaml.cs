@@ -39,7 +39,8 @@ namespace TaskSlateApp
         public static Person defaultPerson2 = new Person("default2", defaultTaskList);
         public static Person defaultPerson3 = new Person("default3", defaultTaskList);
         public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
-        
+
+        public static string activePerson = defaultPerson.Name.ToString();
 
         public MainPage()
         {
@@ -48,6 +49,10 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
+            //Start off with default person - who could then be renamed by rename button
+            //Add button to person menu to rename person, add button to person menu to delete person
+            //- make unable to delete person if only one person remains
 
             //the code below adds a checkbox for each task in the tasklist, but settings need setup
             //for spacing font, size, etc. utilize STACKPANEL for this
@@ -71,7 +76,7 @@ namespace TaskSlateApp
 
         //person will be an object, and the person at top of screen will be populated by accessing that person's properties
 
-        private void AddTaskButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             //this is for addbutton
             //this will generate a text box prompt for typing the name of task
@@ -89,8 +94,25 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
+            AddButtonText.Text = "Add Task";
 
             //What happens when HomeButton is clicked?
+
+            foreach (Task task in defaultTaskList)
+            {
+                CheckBox checkbox = new CheckBox();
+                checkbox.Name = task.TaskName;
+                checkbox.Content = task.TaskName;
+                checkbox.Height = 31;
+                checkbox.FontFamily = new FontFamily("Segoe UI");
+                checkbox.FontSize = 20;
+                checkbox.Checked += TaskCheckBox_Checked;
+
+                CheckBoxStackPanel.Children.Add(checkbox);
+                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+            }
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
@@ -98,6 +120,9 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
+            AddButtonText.Text = "Add Person";
 
             //What happens when PersonButton is clicked?
             //screen changes to show user buttons from a List
@@ -113,7 +138,10 @@ namespace TaskSlateApp
 
                 //button.HorizontalAlignment = new Stretch
                 ButtonStackPanel.Children.Add(button);
-                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+
+                //Start off with default person - who could then be renamed by rename button
+                //Add button to person menu to rename person, add button to person menu to delete person
+                //- make unable to delete person if only one person remains
             }
         }
 
@@ -122,6 +150,8 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Visible;
+            AddButton.Visibility = Visibility.Collapsed;
+            AddButtonText.Visibility = Visibility.Collapsed;
 
             //What happens when CalendarButton is clicked?
         }
@@ -131,6 +161,9 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            AddButton.Visibility = Visibility.Collapsed;
+            AddButtonText.Visibility = Visibility.Collapsed;
+            
 
             //What happens when AlarmButton is clicked?
         }
@@ -142,6 +175,9 @@ namespace TaskSlateApp
             //configure where checkbox will be
             //see https://www.youtube.com/watch?time_continue=224&v=ohcdseuil5E for ideas
             //see code under MainPage also
+
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
         }
 
     }
