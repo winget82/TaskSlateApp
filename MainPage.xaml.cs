@@ -40,15 +40,25 @@ namespace TaskSlateApp
         public static Person defaultPerson3 = new Person("default3", defaultTaskList);
         public static List<Person> slateUsers = new List<Person>() { defaultPerson, defaultPerson2, defaultPerson3 };
 
-        public static string activePerson = defaultPerson.Name.ToString();
-
+        public static string activePerson = defaultPerson.Name.ToString();      
+        
         public MainPage()
         {
             this.InitializeComponent();
-            //TaskCheckBox.Content = defaultTask.TaskName.ToString();
+
+            DispatcherTimer dtClockTime = new DispatcherTimer();
+            dtClockTime.Interval = new TimeSpan(0, 0, 1);
+            dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
+            dtClockTime.Start();
+
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
+            PersonAndDate.Text = activePerson + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+
+            //Time is not updating...
+            //CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
 
             //Start off with default person - who could then be renamed by rename button
             //Add button to person menu to rename person, add button to person menu to delete person
@@ -71,7 +81,7 @@ namespace TaskSlateApp
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
             }
         }
-        
+
         //task check boxes need to be generated dynamically
 
         //person will be an object, and the person at top of screen will be populated by accessing that person's properties
@@ -97,6 +107,7 @@ namespace TaskSlateApp
             AddButton.Visibility = Visibility.Visible;
             AddButtonText.Visibility = Visibility.Visible;
             AddButtonText.Text = "Add Task";
+            
 
             //What happens when HomeButton is clicked?
 
@@ -168,16 +179,9 @@ namespace TaskSlateApp
             //What happens when AlarmButton is clicked?
         }
 
-        public void showTasks()
+        private void DtClockTime_Tick(object sender, object e)
         {
-            //for each task in task list for current person
-            //CheckBox taskCheckBox = new CheckBox();
-            //configure where checkbox will be
-            //see https://www.youtube.com/watch?time_continue=224&v=ohcdseuil5E for ideas
-            //see code under MainPage also
-
-            AddButton.Visibility = Visibility.Visible;
-            AddButtonText.Visibility = Visibility.Visible;
+            CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
         }
 
     }
@@ -235,3 +239,6 @@ namespace TaskSlateApp
 
 //define and use resources in xaml so they can be used in C#
 //https://stackoverflow.com/questions/3308868/how-to-define-and-use-resources-in-xaml-so-they-can-be-used-in-c-sharp
+
+//AWESOME explanation for timers and events on timers
+//http://www.codescratcher.com/wpf/create-timer-wpf/
