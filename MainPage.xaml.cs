@@ -85,14 +85,7 @@ namespace TaskSlateApp
         //task check boxes need to be generated dynamically
 
         //person will be an object, and the person at top of screen will be populated by accessing that person's properties
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            //this is for addbutton
-            //this will generate a text box prompt for typing the name of task
-            //and a box / picker for setting time of alarm            
-        }
-
+                
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             //Here is what happens when TaskCheckBox_Checked
@@ -107,7 +100,10 @@ namespace TaskSlateApp
             AddButton.Visibility = Visibility.Visible;
             AddButtonText.Visibility = Visibility.Visible;
             AddButtonText.Text = "Add Task";
-            
+            RemoveButton.Visibility = Visibility.Visible;
+            RemoveButtonText.Visibility = Visibility.Visible;
+            RemoveButtonText.Text = "Remove Task";
+
 
             //What happens when HomeButton is clicked?
 
@@ -134,6 +130,9 @@ namespace TaskSlateApp
             AddButton.Visibility = Visibility.Visible;
             AddButtonText.Visibility = Visibility.Visible;
             AddButtonText.Text = "Add Person";
+            RemoveButton.Visibility = Visibility.Visible;
+            RemoveButtonText.Visibility = Visibility.Visible;
+            RemoveButtonText.Text = "Remove Person";
 
             //What happens when PersonButton is clicked?
             //screen changes to show user buttons from a List
@@ -163,6 +162,8 @@ namespace TaskSlateApp
             TaskSlateCalendar.Visibility = Visibility.Visible;
             AddButton.Visibility = Visibility.Collapsed;
             AddButtonText.Visibility = Visibility.Collapsed;
+            RemoveButton.Visibility = Visibility.Collapsed;
+            RemoveButtonText.Visibility = Visibility.Collapsed;
 
             //What happens when CalendarButton is clicked?
         }
@@ -174,7 +175,8 @@ namespace TaskSlateApp
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             AddButton.Visibility = Visibility.Collapsed;
             AddButtonText.Visibility = Visibility.Collapsed;
-            
+            RemoveButton.Visibility = Visibility.Collapsed;
+            RemoveButtonText.Visibility = Visibility.Collapsed;
 
             //What happens when AlarmButton is clicked?
         }
@@ -184,6 +186,18 @@ namespace TaskSlateApp
             CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
         }
 
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this is for the add button
+            //this will generate a text box prompt for typing the name of task
+            //and a box / picker for setting time of alarm            
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this is for the remove button
+            //this will let you select with text/button to remove
+        }
     }
 
     public class Person
