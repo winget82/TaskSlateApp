@@ -105,6 +105,8 @@ namespace TaskSlateApp
                 button.Height = 32;
                 button.MinWidth = 340;
                 button.Foreground = new SolidColorBrush(Colors.White);
+                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+
                 //button.HorizontalAlignment = new Stretch
                 ButtonStackPanel.Children.Add(button);
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
@@ -186,3 +188,6 @@ namespace TaskSlateApp
 //Will have to be some initial page to make a user / edit a user - could start with "Default"
 //issues with static keyword
 //https://stackoverflow.com/questions/13162437/how-to-add-the-objects-of-a-class-in-a-static-list-property-of-same-class
+
+//define and use resources in xaml so they can be used in C#
+//https://stackoverflow.com/questions/3308868/how-to-define-and-use-resources-in-xaml-so-they-can-be-used-in-c-sharp
