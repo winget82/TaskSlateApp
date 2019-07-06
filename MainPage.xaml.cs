@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -57,16 +58,11 @@ namespace TaskSlateApp
 
             PersonAndDate.Text = activePerson + " - " + DateTime.Now.ToString("MM/dd/yyyy");
 
-            //Time is not updating...
-            //CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
-
             //Start off with default person - who could then be renamed by rename button
             //Add button to person menu to rename person, add button to person menu to delete person
             //- make unable to delete person if only one person remains
 
-            //the code below adds a checkbox for each task in the tasklist, but settings need setup
-            //for spacing font, size, etc. utilize STACKPANEL for this
-
+            //the code below adds a checkbox for each task in the tasklist
             foreach (Task task in defaultTaskList)
             {
                 CheckBox checkbox = new CheckBox();
@@ -79,19 +75,14 @@ namespace TaskSlateApp
                 
                 CheckBoxStackPanel.Children.Add(checkbox);
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+                //in the styling
             }
         }
 
         //task check boxes need to be generated dynamically
 
         //person will be an object, and the person at top of screen will be populated by accessing that person's properties
-                
-        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //Here is what happens when TaskCheckBox_Checked
-            //Change font to scratched out font
-        }
-
+        
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             CheckBoxStackPanel.Children.Clear();
@@ -104,21 +95,19 @@ namespace TaskSlateApp
             RemoveButtonText.Visibility = Visibility.Visible;
             RemoveButtonText.Text = "Remove Task";
 
-
-            //What happens when HomeButton is clicked?
-
             foreach (Task task in defaultTaskList)
             {
                 CheckBox checkbox = new CheckBox();
                 checkbox.Name = task.TaskName;
                 checkbox.Content = task.TaskName;
+                //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
+                //of each of the generated checkboxes
                 checkbox.Height = 31;
                 checkbox.FontFamily = new FontFamily("Segoe UI");
                 checkbox.FontSize = 20;
                 checkbox.Checked += TaskCheckBox_Checked;
 
                 CheckBoxStackPanel.Children.Add(checkbox);
-                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
             }
         }
 
@@ -134,8 +123,6 @@ namespace TaskSlateApp
             RemoveButtonText.Visibility = Visibility.Visible;
             RemoveButtonText.Text = "Remove Person";
 
-            //What happens when PersonButton is clicked?
-            //screen changes to show user buttons from a List
             foreach (Person person in slateUsers)
             {
                 Button button = new Button();
@@ -146,7 +133,6 @@ namespace TaskSlateApp
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
 
-                //button.HorizontalAlignment = new Stretch
                 ButtonStackPanel.Children.Add(button);
 
                 //Start off with default person - who could then be renamed by rename button
@@ -164,8 +150,6 @@ namespace TaskSlateApp
             AddButtonText.Visibility = Visibility.Collapsed;
             RemoveButton.Visibility = Visibility.Collapsed;
             RemoveButtonText.Visibility = Visibility.Collapsed;
-
-            //What happens when CalendarButton is clicked?
         }
 
         private void AlarmButton_Click(object sender, RoutedEventArgs e)
@@ -177,13 +161,22 @@ namespace TaskSlateApp
             AddButtonText.Visibility = Visibility.Collapsed;
             RemoveButton.Visibility = Visibility.Collapsed;
             RemoveButtonText.Visibility = Visibility.Collapsed;
-
-            //What happens when AlarmButton is clicked?
         }
 
         private void DtClockTime_Tick(object sender, object e)
         {
             CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
+        }
+
+        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            //Here is what happens when TaskCheckBox_Checked
+            //Change font to strikethrough text
+            
+            //NOT WORKING
+            CheckBoxText.TextDecorations = TextDecorations.Strikethrough;
+            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
+            //of each of the generated checkboxes
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -197,6 +190,7 @@ namespace TaskSlateApp
         {
             //this is for the remove button
             //this will let you select with text/button to remove
+            //this will remove any checked tasks showing currently
         }
     }
 
