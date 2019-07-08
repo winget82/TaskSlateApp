@@ -55,6 +55,7 @@ namespace TaskSlateApp
 
             //Add default task list to task list in person object
             defaultPerson.Tasks.AddRange(defaultTaskList);
+            jenn.Tasks.Add(defaultTask2);
 
             ShowTaskList(defaultPerson.Tasks);
 
@@ -198,21 +199,51 @@ namespace TaskSlateApp
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             //this is for the add button
-            //this will generate a text box prompt for typing the name of task
-            //and a box / picker for setting time of alarm            
+            
+            //if buttonstackpanel is visible add active person
+
+            //else if checkboxstackpanel is visible add task
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
             //this is for the remove button
-            //this will let you select with text/button to remove
-            //this will remove any checked tasks showing currently
+
+            //if buttonstackpanel is visible remove active person
+
+            foreach (Person person in slateUsers)
+            {
+                if (ButtonStackPanel.Visibility == Visibility.Visible)
+                {
+                    if (person.IsActivePerson)
+                    {
+                        //remove person from slateUsers
+                        //regenerate buttons
+                    }
+                } else
+                {
+                    if (CheckBoxStackPanel.Visibility == Visibility.Visible)
+                    {
+                        foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
+                        {
+                            if (checkBox.IsChecked == true)
+                            {
+                                //remove task with task.name equal to checkBox.name from person.tasks
+                                //remove checkboxes or regenerate checkboxes                                
+                            }
+                        }
+                    }
+                }             
+            }
+
+            //set new active person to 0 index of slate users
+
         }
 
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
         {
             //if the name of person on button matches the name of person in person list, that person is active
-            string senderButtonName = (sender as Button).Content.ToString();//get the name property of the dynamically generated button clicked
+            string senderButtonName = (sender as Button).Name.ToString();//get the name property of the dynamically generated button clicked
                                     
             foreach (Person person in slateUsers)
             {
@@ -224,8 +255,7 @@ namespace TaskSlateApp
                 {
                     person.IsActivePerson = false;
                 }
-            }
-                       
+            }               
         }
     }
 
