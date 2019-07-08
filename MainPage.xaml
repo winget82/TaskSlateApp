@@ -69,7 +69,7 @@
                     <TextBlock x:Name="CheckBoxText" Text="qwerqwer" TextDecorations="Strikethrough" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FocusVisualPrimaryBrush="White"/>
                 </CheckBox.Content>
             </CheckBox>
-            
+
         </StackPanel>
 
         <!--Stack panel for person list-->
@@ -101,7 +101,7 @@
             </Button.Foreground>
         </Button>
 
-        <TextBlock x:Name="AddButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="Add Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="192" TextAlignment="Left" FontSize="20" FontFamily="Times New Roman">
+        <TextBlock x:Name="AddButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="Add Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="299" TextAlignment="Left" FontSize="20" FontFamily="Times New Roman">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -119,7 +119,7 @@
             </Button.Foreground>
         </Button>
 
-        <TextBlock x:Name="RemoveButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,18" Text="Remove Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="192" TextAlignment="Left" FontSize="20" FontFamily="Segoe UI">
+        <TextBlock x:Name="RemoveButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,18" Text="Remove Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="298" TextAlignment="Left" FontSize="20" FontFamily="Segoe UI">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>

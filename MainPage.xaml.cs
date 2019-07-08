@@ -22,6 +22,7 @@ namespace TaskSlateApp
     /// <summary>
     /// An app for keeping track of tasks to do for one to many people on the same app, no login required
     /// </summary>
+    
     public sealed partial class MainPage : Page
     {
         
@@ -41,6 +42,9 @@ namespace TaskSlateApp
             Person defaultPerson = new Person("Default Person");
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
+
+            Person jenn = new Person("Jenn");
+            slateUsers.Add(jenn);
 
             Task defaultTask = new Task("Sweep", false);
             Task defaultTask2 = new Task("Dishes", false);
@@ -66,7 +70,7 @@ namespace TaskSlateApp
             ClearScreen();
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
-            RemoveButtonText.Text = "Remove Task";
+            RemoveButtonText.Text = "Remove Checked Task(s)";
 
             foreach (Task task in Tasks)
             {
@@ -105,7 +109,7 @@ namespace TaskSlateApp
             ClearScreen();
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Person";
-            RemoveButtonText.Text = "Remove Person";
+            RemoveButtonText.Text = "Remove Active Person";
 
             foreach (Person person in slateUsers)
             {
@@ -116,6 +120,7 @@ namespace TaskSlateApp
                 button.MinWidth = 340;
                 button.Foreground = new SolidColorBrush(Colors.White);
                 button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                button.Click += new RoutedEventHandler(ActiveUserButton_Click);
 
                 ButtonStackPanel.Children.Add(button);
 
@@ -207,17 +212,20 @@ namespace TaskSlateApp
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
         {
             //if the name of person on button matches the name of person in person list, that person is active
-            //how do you get the name of a button generated dynamically in order to access its properties?
-            /*
+            string senderButtonName = (sender as Button).Content.ToString();//get the name property of the dynamically generated button clicked
+                                    
             foreach (Person person in slateUsers)
             {
-                //https://stackoverflow.com/questions/22591756/get-values-from-dynamically-added-textboxes-asp-net-c-sharp
-                if (Button..ToString == person.Name.ToString())//(name of person on button clicked matches the name of a person in person list)
+                if (senderButtonName.Equals(person.Name.ToString()))//(name of person on button clicked matches the name of a person in person list)
                 {
                     person.IsActivePerson = true;
+                    PersonAndDate.Text = senderButtonName + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                } else
+                {
+                    person.IsActivePerson = false;
                 }
             }
-            */
+                       
         }
     }
 
