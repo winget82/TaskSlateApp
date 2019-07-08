@@ -173,7 +173,7 @@ namespace TaskSlateApp
         private void DtClockTime_Tick(object sender, object e)
         {
             CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
-
+            
             //if person in person list is active person than put name at top of screen         
             foreach (Person person in slateUsers)
             {
@@ -182,7 +182,7 @@ namespace TaskSlateApp
                     PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
                 }
             }
-                
+
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -211,37 +211,75 @@ namespace TaskSlateApp
 
             //if buttonstackpanel is visible remove active person
 
-            foreach (Person person in slateUsers)
+            //copy slateUsers list to another list to enumerate in foreach statement and still be able
+            //to modify slateUsers list
+
+            List<Person> slateUsersCopy = new List<Person>(slateUsers);
+
+            foreach (Person person in slateUsersCopy)
             {
-                if (ButtonStackPanel.Visibility == Visibility.Visible)
+                if (person.IsActivePerson)
                 {
-                    if (person.IsActivePerson)
+                    if (ButtonStackPanel.Visibility == Visibility.Visible)
                     {
                         //remove person from slateUsers
-                        //regenerate buttons
+                        slateUsers.Remove(person);
+                        //make unable to delete person if only one person remains
                     }
-                } else
-                {
-                    if (CheckBoxStackPanel.Visibility == Visibility.Visible)
+                    else
                     {
-                        foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
+                        if (CheckBoxStackPanel.Visibility == Visibility.Visible)
                         {
-                            if (checkBox.IsChecked == true)
+                            foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
                             {
-                                //remove task with task.name equal to checkBox.name from person.tasks
-                                //remove checkboxes or regenerate checkboxes                                
+                                if (checkBox.IsChecked == true)
+                                {
+                                    //remove task with task.name equal to checkBox.name from person.tasks
+                                    foreach (Task task in person.Tasks)
+                                    {
+                                        if (checkBox.IsChecked == true && checkBox.Name.Equals(task.TaskName))
+                                        {
+                                            person.Tasks.Remove(task);
+                                            //SOME KIND OF BUG IN THE REMOVING OF CHECKED ITEMS AT THE MOMENT
+                                        }
+                                    }
+                                    //regenerate checkboxes 
+                                    ShowTaskList(person.Tasks);
+                                }
                             }
                         }
                     }
-                }             
+                }
             }
 
-            //set new active person to 0 index of slate users
+            //regenerate list of users if buttonstackpanel visible
+            if (ButtonStackPanel.Visibility == Visibility.Visible)
+            {
+                ClearScreen();
+                ShowAddRemoveButtons();
 
+                foreach (Person person in slateUsers)
+                {
+                    Button button = new Button();
+                    button.Name = person.Name;
+                    button.Content = person.Name;
+                    button.Height = 32;
+                    button.MinWidth = 340;
+                    button.Foreground = new SolidColorBrush(Colors.White);
+                    button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                    button.Click += new RoutedEventHandler(ActiveUserButton_Click);
+
+                    ButtonStackPanel.Children.Add(button);
+
+                }
+                //set new active person to 0 index of slate users
+                //slateUsers[0].IsActivePerson = true;
+                //SOME KIND OF BUG ON LINE ABOVE AND ALSO IN THE REMOVING CHECKED ITEMS IN LIST
+            }
         }
 
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
-        {
+            {
             //if the name of person on button matches the name of person in person list, that person is active
             string senderButtonName = (sender as Button).Name.ToString();//get the name property of the dynamically generated button clicked
                                     
