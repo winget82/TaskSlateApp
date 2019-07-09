@@ -43,8 +43,6 @@ namespace TaskSlateApp
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
 
-            Person jenn = new Person("Jenn");
-            slateUsers.Add(jenn);
 
             Task defaultTask = new Task("Sweep", false);
             Task defaultTask2 = new Task("Dishes", false);
@@ -55,12 +53,11 @@ namespace TaskSlateApp
 
             //Add default task list to task list in person object
             defaultPerson.Tasks.AddRange(defaultTaskList);
-            jenn.Tasks.Add(defaultTask2);
-
+            
             ShowTaskList(defaultPerson.Tasks);
 
-            //Add button to person menu to rename person, add button to person menu to delete person
-
+            //Add button to person menu to rename person or task
+            //THIS IS EXTRA FEATURE SAVE FOR LAST
         }
 
         private void ShowTaskList(List<Task> Tasks)//need to pass active person.tasks in here
@@ -209,9 +206,7 @@ namespace TaskSlateApp
         {
             //this is for the add button
             AddTextRelativePanel.Visibility = Visibility.Visible;
-            //if buttonstackpanel is visible add active person
-
-            //else if checkboxstackpanel is visible add task
+            
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
@@ -307,10 +302,52 @@ namespace TaskSlateApp
 
         private void AddTextEntryButton_Click(object sender, RoutedEventArgs e)
         {
+            string clearText = "";
+            
             //get text input from AddTextEntryBox upon click
-            //add it to either person.Tasks if that person is active
+            string text = AddTextEntryBox.Text;
+
+            //WILL NEED TO FIX BUG HERE - PREVENT USING THE SAME NAME TWICE
+            //BECAUSE WHEN REMOVED, IT WILL REMOVE BOTH SINCE NAMED THE SAME
+
+            //clear text in addtextentrybox
+            AddTextEntryBox.Text = clearText;
+
             //or add it to slateUsers if adding a person
+            if (ButtonStackPanel.Visibility == Visibility.Visible)
+            {
+                //add person to slateUsers
+                Person personNew = new Person(text);
+                slateUsers.Add(personNew);
+
+                //refresh person buttons
+                ClearScreen();
+                ShowAddRemoveButtons();
+
+                foreach (Person person in slateUsers)
+                {
+                    Button button = new Button();
+                    button.Name = person.Name;
+                    button.Content = person.Name;
+                    button.Height = 32;
+                    button.MinWidth = 340;
+                    button.Foreground = new SolidColorBrush(Colors.White);
+                    button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                    button.Click += new RoutedEventHandler(ActiveUserButton_Click);
+
+                    ButtonStackPanel.Children.Add(button);
+                }
+
+            } /*else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
+            {
+                //add task to person.Tasks if that person is active
+
+            }
+            */
             //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
+            AddTextEntryBox.Visibility = Visibility.Visible;
+            AddTextEntryButton.Visibility = Visibility.Visible;
+
         }
     }
 
