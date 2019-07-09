@@ -60,7 +60,6 @@ namespace TaskSlateApp
             ShowTaskList(defaultPerson.Tasks);
 
             //Add button to person menu to rename person, add button to person menu to delete person
-            //- make unable to delete person if only one person remains
 
         }
 
@@ -89,7 +88,7 @@ namespace TaskSlateApp
                 CheckBoxStackPanel.Children.Add(checkbox);
 
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
-                //in the styling
+                //in the styling - SAVE FOR LAST
             }
         }
 
@@ -130,9 +129,11 @@ namespace TaskSlateApp
 
                 ButtonStackPanel.Children.Add(button);
 
+                //IF NO ONE EXISTS AT OPENING OF PROGRAM
                 //Start off with default person - who could then be renamed by rename button
+                
                 //Add button to person menu to rename person, add button to person menu to delete person
-                //- make unable to delete person if only one person remains
+                //RENAME button is extra functionallity save it for last
             }
         }
 
@@ -194,11 +195,13 @@ namespace TaskSlateApp
         {
             //Here is what happens when TaskCheckBox_Checked
             //Change font to strikethrough text
-            
-            //NOT WORKING
-            CheckBoxText.TextDecorations = TextDecorations.Strikethrough;
+            /*
+            CheckBox senderButtonName = (sender as CheckBox);
+            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
+            senderButtonName.Content = TextDecorations.Strikethrough;
             //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
             //of each of the generated checkboxes
+            */
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -214,11 +217,8 @@ namespace TaskSlateApp
         {
             //this is for the remove button
 
-            //if buttonstackpanel is visible remove active person
-
             //copy slateUsers list to another list to enumerate in foreach statement and still be able
             //to modify slateUsers list
-
             List<Person> slateUsersCopy = new List<Person>(slateUsers);
 
             foreach (Person person in slateUsersCopy)
@@ -228,26 +228,26 @@ namespace TaskSlateApp
                     if (ButtonStackPanel.Visibility == Visibility.Visible)
                     {
                         //remove person from slateUsers
-                        slateUsers.Remove(person);
-                        //make unable to delete person if only one person remains
+                        slateUsers.Remove(person);         
                     }
                     else
                     {
                         if (CheckBoxStackPanel.Visibility == Visibility.Visible)
                         {
+                            //make copy of person's task list so can enumerate through it and still be able
+                            //to modify original person.Tasks list
                             List<Task> personTasksCopy = new List<Task>(person.Tasks);
 
                             foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
                             {
                                 if (checkBox.IsChecked == true)
                                 {
-                                    //remove task with task.name equal to checkBox.name from person.tasks
+                                    //remove task with task.name equal to checkBox.name from personTasksCopy
                                     foreach (Task task in personTasksCopy)
                                     {
                                         if (checkBox.IsChecked == true && checkBox.Name.Equals(task.TaskName))
                                         {
                                             person.Tasks.Remove(task);
-                                            //SOME KIND OF BUG IN THE REMOVING OF CHECKED ITEMS AT THE MOMENT
                                         }
                                     }
                                     //regenerate checkboxes 
@@ -277,11 +277,12 @@ namespace TaskSlateApp
                     button.Click += new RoutedEventHandler(ActiveUserButton_Click);
 
                     ButtonStackPanel.Children.Add(button);
-
                 }
-                //set new active person to 0 index of slate users
-                //slateUsers[0].IsActivePerson = true;
-                //SOME KIND OF BUG ON LINE ABOVE AND ALSO IN THE REMOVING CHECKED ITEMS IN LIST
+                //set new active person to index[0] of slate users if any person left
+                if (slateUsers.Count >= 1)
+                {
+                    slateUsers[0].IsActivePerson = true;
+                }             
             }
         }
 
@@ -333,15 +334,7 @@ namespace TaskSlateApp
             IsComplete = isCompleted;
         }
     }
-
 }
-
-//checkbox styling
-//https://stackoverflow.com/questions/49774305/how-to-change-uwp-checkbox-text-color
-
-//Will have to be some initial page to make a user / edit a user - could start with "Default"
-//issues with static keyword
-//https://stackoverflow.com/questions/13162437/how-to-add-the-objects-of-a-class-in-a-static-list-property-of-same-class
 
 //define and use resources in xaml so they can be used in C#
 //https://stackoverflow.com/questions/3308868/how-to-define-and-use-resources-in-xaml-so-they-can-be-used-in-c-sharp
