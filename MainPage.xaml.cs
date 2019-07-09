@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -14,6 +15,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Runtime.Serialization;
+//https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractserializer?redirectedfrom=MSDN&view=netframework-4.8
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -27,10 +30,14 @@ namespace TaskSlateApp
     {
         
         public static List<Person> slateUsers = new List<Person>() { };    
-        
+                
         public MainPage()
         {
             this.InitializeComponent();
+
+            //folder path to save to and load from
+            //https://www.c-sharpcorner.com/UploadFile/6d1860/how-to-implement-local-storage-in-universal-windows-apps/
+            //var folder = ApplicationData.Current.LocalFolder;
 
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
@@ -349,12 +356,31 @@ namespace TaskSlateApp
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
         }
+        /*
+        public void savePersonData()
+        {
+            
+        }
+
+        public void loadPersonData()
+        {
+
+        }
+        */
     }
 
+    //Look into DataContractSerializer Class to serialize and deserialize into XML stream or document
+    //for saving the data inside the slateUsers list and the nested Tasks list inside each person
+    [DataContract]
     public class Person
     {
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public List<Task> Tasks;
+
+        [DataMember]
         public bool IsActivePerson { get; set; }
         //AlarmSetting
 
@@ -367,10 +393,14 @@ namespace TaskSlateApp
         }
     }
 
+    [DataContract]
     public class Task
     {
+        [DataMember]
         public string TaskName { get; set; }
         //datetime object for alarm reminder time and day?
+
+        [DataMember]
         public bool IsComplete { get; set; }
         //recurrence could add new instances of object?
 
