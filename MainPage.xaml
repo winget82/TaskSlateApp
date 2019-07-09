@@ -92,7 +92,7 @@
 
         <!--Relative panel for text box and add button - need to determine how to keep it from overlapping checkboxes-->
         <RelativePanel x:Name="AddTextRelativePanel" HorizontalAlignment="Center" Height="56" Margin="0,0,0,80" VerticalAlignment="Bottom" Width="360">
-            <TextBox x:Name="AddTextEntryBox" Height="36" Text="" Width="273" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBox x:Name="AddTextEntryBox" Height="36" Text="" Width="273" FontSize="18" Margin="10,0,0,0" VerticalAlignment="Center"/>
             <Button x:Name="AddTextEntryButton" Content="Add" RelativePanel.RightOf="AddTextEntryBox" Height="36" Width="67" FontSize="18" VerticalAlignment="Center" Click="AddTextEntryButton_Click">
                 <Button.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

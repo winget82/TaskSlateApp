@@ -206,7 +206,6 @@ namespace TaskSlateApp
         {
             //this is for the add button
             AddTextRelativePanel.Visibility = Visibility.Visible;
-            
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
@@ -338,16 +337,23 @@ namespace TaskSlateApp
                     ButtonStackPanel.Children.Add(button);
                 }
 
-            } /*else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
+            } else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
             {
                 //add task to person.Tasks if that person is active
-
+                foreach (Person person in slateUsers)
+                {
+                    if (person.IsActivePerson)
+                    {
+                        Task task = new Task(text);
+                        person.Tasks.Add(task);
+                        //refresh tasks
+                        ShowTaskList(person.Tasks);
+                    }
+                }
             }
-            */
             //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
-
         }
     }
 
