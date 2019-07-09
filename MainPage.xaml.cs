@@ -69,6 +69,7 @@ namespace TaskSlateApp
             //task check boxes need to be generated dynamically
             //the code below adds a checkbox for each task in the tasklist
             ClearScreen();
+            ButtonStackPanel.Visibility = Visibility.Collapsed;
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
             RemoveButtonText.Text = "Remove Checked Task(s)";
@@ -94,6 +95,8 @@ namespace TaskSlateApp
 
         public void HomeButton_Click(object sender, RoutedEventArgs e)
         {
+            ClearScreen();
+            CheckBoxStackPanel.Visibility = Visibility.Visible;
             
             foreach (Person person in slateUsers)
             {
@@ -108,6 +111,8 @@ namespace TaskSlateApp
         private void PersonButton_Click(object sender, RoutedEventArgs e)
         {
             ClearScreen();
+            CheckBoxStackPanel.Visibility = Visibility.Collapsed;
+            ButtonStackPanel.Visibility = Visibility.Visible;
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Person";
             RemoveButtonText.Text = "Remove Active Person";
@@ -230,12 +235,14 @@ namespace TaskSlateApp
                     {
                         if (CheckBoxStackPanel.Visibility == Visibility.Visible)
                         {
+                            List<Task> personTasksCopy = new List<Task>(person.Tasks);
+
                             foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
                             {
                                 if (checkBox.IsChecked == true)
                                 {
                                     //remove task with task.name equal to checkBox.name from person.tasks
-                                    foreach (Task task in person.Tasks)
+                                    foreach (Task task in personTasksCopy)
                                     {
                                         if (checkBox.IsChecked == true && checkBox.Name.Equals(task.TaskName))
                                         {
