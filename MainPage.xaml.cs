@@ -42,14 +42,10 @@ namespace TaskSlateApp
             Person defaultPerson = new Person("Default Person");
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
-
-
-            Task defaultTask = new Task("Sweep", false);
-            Task defaultTask2 = new Task("Dishes", false);
-            Task defaultTask3 = new Task("Bathroom", false);
-            Task defaultTask4 = new Task("Make Bed", false);
-
-            List<Task> defaultTaskList = new List<Task>() { defaultTask, defaultTask2, defaultTask3, defaultTask4 };
+            
+            Task defaultTask = new Task("Task1", false);
+            
+            List<Task> defaultTaskList = new List<Task>() { defaultTask };
 
             //Add default task list to task list in person object
             defaultPerson.Tasks.AddRange(defaultTaskList);
@@ -101,7 +97,6 @@ namespace TaskSlateApp
                     ShowTaskList(person.Tasks);
                 }
             }
-            
         }
 
         private void PersonButton_Click(object sender, RoutedEventArgs e)
@@ -186,7 +181,6 @@ namespace TaskSlateApp
                     PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
                 }
             }
-
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -387,9 +381,3 @@ namespace TaskSlateApp
         }
     }
 }
-
-//define and use resources in xaml so they can be used in C#
-//https://stackoverflow.com/questions/3308868/how-to-define-and-use-resources-in-xaml-so-they-can-be-used-in-c-sharp
-
-//AWESOME explanation for timers and events on timers
-//http://www.codescratcher.com/wpf/create-timer-wpf/
