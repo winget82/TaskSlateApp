@@ -142,6 +142,7 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            AddTextRelativePanel.Visibility = Visibility.Collapsed;
         }
 
         private void CollapseAddRemoveButtons()
@@ -207,7 +208,7 @@ namespace TaskSlateApp
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             //this is for the add button
-            
+            AddTextRelativePanel.Visibility = Visibility.Visible;
             //if buttonstackpanel is visible add active person
 
             //else if checkboxstackpanel is visible add task
@@ -302,6 +303,14 @@ namespace TaskSlateApp
                     person.IsActivePerson = false;
                 }
             }               
+        }
+
+        private void AddTextEntryButton_Click(object sender, RoutedEventArgs e)
+        {
+            //get text input from AddTextEntryBox upon click
+            //add it to either person.Tasks if that person is active
+            //or add it to slateUsers if adding a person
+            //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
         }
     }
 

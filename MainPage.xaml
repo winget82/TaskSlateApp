@@ -62,7 +62,7 @@
         </Button>
 
         <!--Stack panel for task lists, etc.-->
-        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked">
                 <CheckBox.Content>
                     <!--come back to strikethrough styling later if you have time, prioritize main aspects first-->
@@ -73,7 +73,7 @@
         </StackPanel>
 
         <!--Stack panel for person list-->
-        <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+        <StackPanel x:Name="ButtonStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <Button Style="{StaticResource PersonButtonStyle}" Content="Button" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20" Click="ActiveUserButton_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -86,9 +86,22 @@
         </StackPanel>
 
         <!--Stack panel for calendar-->
-        <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="421" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+        <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <CalendarView x:Name="TaskSlateCalendar" Height="290" Width="342" Background="Black" OutOfScopeForeground="White" SelectedForeground="#FF00D71D" PressedForeground="#FF00D71D" CalendarItemForeground="White" OutOfScopeBackground="Black" CalendarItemBackground="Black" BlackoutForeground="#FF27D700" Foreground="#CCFFFFFF" SelectedBorderBrush="#FF00D71D" SelectedPressedBorderBrush="#FF27D700" TodayForeground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FF27D700" FocusBorderBrush="#FF27D700" SelectedHoverBorderBrush="#FF27D700"/>
         </StackPanel>
+
+        <!--Relative panel for text box and add button - need to determine how to keep it from overlapping checkboxes-->
+        <RelativePanel x:Name="AddTextRelativePanel" HorizontalAlignment="Center" Height="56" Margin="0,0,0,80" VerticalAlignment="Bottom" Width="360">
+            <TextBox x:Name="AddTextEntryBox" Height="36" Text="" Width="273" FontSize="20" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <Button x:Name="AddTextEntryButton" Content="Add" RelativePanel.RightOf="AddTextEntryBox" Height="36" Width="67" FontSize="18" VerticalAlignment="Center" Click="AddTextEntryButton_Click">
+                <Button.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="1"/>
+                        <GradientStop Color="#FF03FF23" Offset="0"/>
+                    </LinearGradientBrush>
+                </Button.Foreground>
+            </Button>
+        </RelativePanel>
 
         <!--Grid for add button can NOT get to collapse or clear???-->
         <Grid x:Name="AddButtonGrid" HorizontalAlignment="Center" Height="66" Margin="0,564,0,0" VerticalAlignment="Top" Width="340"/>
@@ -127,6 +140,7 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
+
     </Grid>
 
 </Page>
