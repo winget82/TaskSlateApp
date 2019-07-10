@@ -62,7 +62,7 @@
         </Button>
 
         <!--Stack panel for task lists, etc.-->
-        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Left" Height="383" Margin="78,120,0,0" VerticalAlignment="Top" Width="272">
+        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Left" Height="383" Margin="100,120,0,0" VerticalAlignment="Top" Width="250">
             <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked" Width="248" VerticalAlignment="Top">
                 <CheckBox.Content>
                     <!--come back to strikethrough styling later if you have time, prioritize main aspects first-->
@@ -71,8 +71,8 @@
             </CheckBox>
         </StackPanel>
 
-        <StackPanel x:Name="TaskAlarmsStackPanel" HorizontalAlignment="Left" Height="379" Margin="10,120,0,0" VerticalAlignment="Top" Width="60">
-            <Button Style="{StaticResource PersonButtonStyle}" Content="99:99" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="14" FontStretch="SemiCondensed">
+        <StackPanel x:Name="TaskAlarmsStackPanel" HorizontalAlignment="Left" Height="379" Margin="10,120,0,0" VerticalAlignment="Top" Width="80">
+            <Button Style="{StaticResource PersonButtonStyle}" Content="99:99" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="14" FontStretch="SemiCondensed" Click="TaskAlarmButton_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF033209" Offset="1"/>

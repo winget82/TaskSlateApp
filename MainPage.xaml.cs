@@ -17,7 +17,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-//https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractserializer?redirectedfrom=MSDN&view=netframework-4.8
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -31,17 +30,12 @@ namespace TaskSlateApp
     {
 
         public static List<Person> slateUsers = new List<Person>() { };
+        public static string defaultAlarm = "12:00 PM";
 
         public MainPage()
         {
             this.InitializeComponent();
-
-            //folder path to save to and load from
-            //https://www.c-sharpcorner.com/UploadFile/6d1860/how-to-implement-local-storage-in-universal-windows-apps/
-            //var folder = ApplicationData.Current.LocalFolder;
-
-            //readPersonObjects();
-
+                        
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
@@ -53,7 +47,7 @@ namespace TaskSlateApp
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
 
-            Task defaultTask = new Task("Task1", false);
+            Task defaultTask = new Task("Task1", defaultAlarm);
 
             List<Task> defaultTaskList = new List<Task>() { defaultTask };
 
@@ -90,8 +84,17 @@ namespace TaskSlateApp
 
                 CheckBoxStackPanel.Children.Add(checkbox);
 
-                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each button
+                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each checkbox
                 //in the styling - SAVE FOR LAST
+
+                Button button = new Button();
+                button.Content = task.AlarmTime;
+                button.Height = 32;
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                button.Click += new RoutedEventHandler(TaskAlarmButton_Click);
+
+                TaskAlarmsStackPanel.Children.Add(button);
             }
         }
 
@@ -143,6 +146,7 @@ namespace TaskSlateApp
         {
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
+            TaskAlarmsStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             AddTextRelativePanel.Visibility = Visibility.Collapsed;
         }
@@ -350,7 +354,7 @@ namespace TaskSlateApp
                 {
                     if (person.IsActivePerson)
                     {
-                        Task task = new Task(text);
+                        Task task = new Task(text, defaultAlarm);
                         person.Tasks.Add(task);
                         //refresh tasks
                         ShowTaskList(person.Tasks);
@@ -361,6 +365,11 @@ namespace TaskSlateApp
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
             //writePersonObjects();
+        }
+
+        private void TaskAlarmButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
@@ -407,6 +416,7 @@ namespace TaskSlateApp
         }
         */
     }
+
     //Look into DataContractSerializer Class to serialize and deserialize into XML stream or document
     //for saving the data inside the slateUsers list and the nested Tasks list inside each person
     //try the example at this site, just use foreach loop and don't writer.Close until all are
@@ -440,16 +450,24 @@ namespace TaskSlateApp
     {
         [DataMember]
         public string TaskName { get; set; }
-        //datetime object for alarm reminder time and day?
+        
 
         [DataMember]
         public bool IsComplete { get; set; }
-        //recurrence could add new instances of object?
+        //reocurrence could add new instances of object?
 
-        public Task(string taskName, bool isCompleted=false)
+        [DataMember]
+        public string AlarmTime { get; set; }
+
+        [DataMember]
+        public bool AlarmSet { get; set; }
+
+        public Task(string taskName, string alarmTime, bool isCompleted=false, bool alarmSet=false)
         {
             TaskName = taskName;
             IsComplete = isCompleted;
+            AlarmTime = alarmTime;
+            AlarmSet = alarmSet;
         }
     }
 }
