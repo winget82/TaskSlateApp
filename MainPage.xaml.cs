@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 //https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractserializer?redirectedfrom=MSDN&view=netframework-4.8
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -25,12 +26,12 @@ namespace TaskSlateApp
     /// <summary>
     /// An app for keeping track of tasks to do for one to many people on the same app, no login required
     /// </summary>
-    
+
     public sealed partial class MainPage : Page
     {
-        
-        public static List<Person> slateUsers = new List<Person>() { };    
-                
+
+        public static List<Person> slateUsers = new List<Person>() { };
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -38,6 +39,8 @@ namespace TaskSlateApp
             //folder path to save to and load from
             //https://www.c-sharpcorner.com/UploadFile/6d1860/how-to-implement-local-storage-in-universal-windows-apps/
             //var folder = ApplicationData.Current.LocalFolder;
+
+            //readPersonObjects();
 
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
@@ -49,14 +52,14 @@ namespace TaskSlateApp
             Person defaultPerson = new Person("Default Person");
             slateUsers.Add(defaultPerson);
             defaultPerson.IsActivePerson = true;
-            
+
             Task defaultTask = new Task("Task1", false);
-            
+
             List<Task> defaultTaskList = new List<Task>() { defaultTask };
 
             //Add default task list to task list in person object
             defaultPerson.Tasks.AddRange(defaultTaskList);
-            
+
             ShowTaskList(defaultPerson.Tasks);
 
             //Add button to person menu to rename person or task
@@ -96,7 +99,7 @@ namespace TaskSlateApp
         {
             ClearScreen();
             CheckBoxStackPanel.Visibility = Visibility.Visible;
-            
+
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -130,7 +133,7 @@ namespace TaskSlateApp
 
                 //IF NO ONE EXISTS AT OPENING OF PROGRAM
                 //Start off with default person - who could then be renamed by rename button
-                
+
                 //Add button to person menu to rename person, add button to person menu to delete person
                 //RENAME button is extra functionallity save it for last
             }
@@ -179,7 +182,7 @@ namespace TaskSlateApp
         private void DtClockTime_Tick(object sender, object e)
         {
             CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
-            
+
             //if person in person list is active person than put name at top of screen         
             foreach (Person person in slateUsers)
             {
@@ -224,7 +227,7 @@ namespace TaskSlateApp
                     if (ButtonStackPanel.Visibility == Visibility.Visible)
                     {
                         //remove person from slateUsers
-                        slateUsers.Remove(person);         
+                        slateUsers.Remove(person);
                     }
                     else
                     {
@@ -278,32 +281,33 @@ namespace TaskSlateApp
                 if (slateUsers.Count >= 1)
                 {
                     slateUsers[0].IsActivePerson = true;
-                }             
+                }
             }
         }
 
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
-            {
+        {
             //if the name of person on button matches the name of person in person list, that person is active
             string senderButtonName = (sender as Button).Name.ToString();//get the name property of the dynamically generated button clicked
-                                    
+
             foreach (Person person in slateUsers)
             {
                 if (senderButtonName.Equals(person.Name.ToString()))//(name of person on button clicked matches the name of a person in person list)
                 {
                     person.IsActivePerson = true;
                     PersonAndDate.Text = senderButtonName + " - " + DateTime.Now.ToString("MM/dd/yyyy");
-                } else
+                }
+                else
                 {
                     person.IsActivePerson = false;
                 }
-            }               
+            }
         }
 
         private void AddTextEntryButton_Click(object sender, RoutedEventArgs e)
         {
             string clearText = "";
-            
+
             //get text input from AddTextEntryBox upon click
             string text = AddTextEntryBox.Text;
 
@@ -338,7 +342,8 @@ namespace TaskSlateApp
                     ButtonStackPanel.Children.Add(button);
                 }
 
-            } else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
+            }
+            else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
             {
                 //add task to person.Tasks if that person is active
                 foreach (Person person in slateUsers)
@@ -355,22 +360,59 @@ namespace TaskSlateApp
             //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
-        }
-        /*
-        public void savePersonData()
-        {
-            
+            //writePersonObjects();
         }
 
-        public void loadPersonData()
-        {
+        /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
+        public static void writePersonObjects()
+        {            
+            FileStream fileStream = new FileStream(@"slateUsers.xml", FileMode.Create);
+            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Person));
+            dataContractSerializer.WriteObject(fileStream, slateUsers);
+            //fileStream.Close();
+        }
+        
+        public static void readPersonObjects()
+        {            
+            FileStream fileStream = new FileStream(@"slateUsers.xml", FileMode.Open);
+            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fileStream, new XmlDictionaryReaderQuotas());
+            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Person));
 
+            // Deserialize the data and read it from the instance.
+            List<Person> slateUsers = (List<Person>)dataContractSerializer.ReadObject(reader, true);
+            //reader.Close();
+            //fileStream.Close();            
+        }
+        */
+
+        /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
+        public void writePersonObjects()
+        {
+            using (Stream fs = new FileStream(@"C:\slateUsers.xml",
+                FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
+                serializer.Serialize(fs, slateUsers);
+            }
+        }
+
+        public List<Person> readPersonObjects()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
+
+            using (FileStream fs2 = File.OpenRead(@"C:\slateUsers.xml"))
+            {
+                return slateUsers = (List<Person>)serializer.Deserialize(fs2);
+            }
         }
         */
     }
-
     //Look into DataContractSerializer Class to serialize and deserialize into XML stream or document
     //for saving the data inside the slateUsers list and the nested Tasks list inside each person
+    //try the example at this site, just use foreach loop and don't writer.Close until all are
+    //serialized / deserialized
+    //https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractserializer?redirectedfrom=MSDN&view=netframework-4.8
+
     [DataContract]
     public class Person
     {

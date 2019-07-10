@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page x:Name="TaskSlate"
     x:Class="TaskSlateApp.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -62,14 +62,24 @@
         </Button>
 
         <!--Stack panel for task lists, etc.-->
-        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
-            <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked">
+        <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Left" Height="383" Margin="78,120,0,0" VerticalAlignment="Top" Width="272">
+            <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked" Width="248" VerticalAlignment="Top">
                 <CheckBox.Content>
                     <!--come back to strikethrough styling later if you have time, prioritize main aspects first-->
-                    <TextBlock x:Name="CheckBoxText" Text="qwerqwer" TextDecorations="Strikethrough" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FocusVisualPrimaryBrush="White"/>
+                    <TextBlock x:Name="CheckBoxText" Text="Task" TextDecorations="Strikethrough" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FocusVisualPrimaryBrush="White"/>
                 </CheckBox.Content>
             </CheckBox>
+        </StackPanel>
 
+        <StackPanel x:Name="TaskAlarmsStackPanel" HorizontalAlignment="Left" Height="379" Margin="10,120,0,0" VerticalAlignment="Top" Width="60">
+            <Button Style="{StaticResource PersonButtonStyle}" Content="99:99" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="14" FontStretch="SemiCondensed">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF033209" Offset="1"/>
+                        <GradientStop Color="#FFB4B3B3" Offset="0"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
 
         <!--Stack panel for person list-->
@@ -82,7 +92,6 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-
         </StackPanel>
 
         <!--Stack panel for calendar-->
