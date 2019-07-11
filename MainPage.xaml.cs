@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -30,6 +31,7 @@ namespace TaskSlateApp
     {
 
         public static List<Person> slateUsers = new List<Person>() { };
+        
         public static string defaultAlarm = "12:00 PM";
 
         public MainPage()
@@ -41,20 +43,31 @@ namespace TaskSlateApp
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
             dtClockTime.Start();
 
-            //Start off with default person - if no person exists upon load during start of app
-            //- who could then be renamed by rename button
-            Person defaultPerson = new Person("Default Person");
-            slateUsers.Add(defaultPerson);
-            defaultPerson.IsActivePerson = true;
+            readPersonObjects();
+                        
+            if (slateUsers.Count!=0)
+            {                
+                ClearScreen();
+                CheckBoxStackPanel.Visibility = Visibility.Visible;
+                slateUsers[1].IsActivePerson = true;
+                ShowTaskList(slateUsers[1].Tasks);
+            } else
+            {
+                //Start off with default person with a default task - if no person exists
+                //upon load during start of app - who could then be renamed by rename button
+                Person defaultPerson = new Person("Default Person");
+                slateUsers.Add(defaultPerson);
+                defaultPerson.IsActivePerson = true;
 
-            Task defaultTask = new Task("Task1", defaultAlarm);
+                Task defaultTask = new Task("Task1", defaultAlarm);
 
-            List<Task> defaultTaskList = new List<Task>() { defaultTask };
+                List<Task> defaultTaskList = new List<Task>() { defaultTask };
 
-            //Add default task list to task list in person object
-            defaultPerson.Tasks.AddRange(defaultTaskList);
+                //Add default task list to task list in person object
+                defaultPerson.Tasks.AddRange(defaultTaskList);
 
-            ShowTaskList(defaultPerson.Tasks);
+                ShowTaskList(defaultPerson.Tasks);
+            }       
 
             //Add button to person menu to rename person or task
             //THIS IS EXTRA FEATURE SAVE FOR LAST
@@ -364,13 +377,52 @@ namespace TaskSlateApp
             //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
-            //writePersonObjects();
+            writePersonObjects();
         }
 
         private void TaskAlarmButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        public async void writePersonObjects()
+        {
+            /*
+            List<WebUrls> objUrlsList = new List<WebUrls>();
+            objUrlsList.Add(new WebUrls { Url_ID = "1", UrlName = "http://bing.com" });
+            objUrlsList.Add(new WebUrls { Url_ID = "0", UrlName = "http://microsoft.com" });
+            objUrlsList.Add(new WebUrls { Url_ID = "2", UrlName = "http://bsubramanyamraju.blogspot.in/" });
+            */
+
+            StorageFile slateUsersFile = await ApplicationData.Current.LocalFolder.CreateFileAsync
+                ("SlateUsers", CreationCollisionOption.ReplaceExisting);
+
+            IRandomAccessStream raStream = await slateUsersFile.OpenAsync(FileAccessMode.ReadWrite);
+
+            using (IOutputStream outStream = raStream.GetOutputStreamAt(0))
+            {
+                // Serialize the Session State
+                DataContractSerializer serializer = new DataContractSerializer(typeof(List<Person>));
+
+                serializer.WriteObject(outStream.AsStreamForWrite(), slateUsers);
+
+                await outStream.FlushAsync();
+                outStream.Dispose();
+                raStream.Dispose();
+            }
+        }
+
+        public async void readPersonObjects()
+        {
+            List<Person> slateUsersReadList = new List<Person>();
+            var Serializer = new DataContractSerializer(typeof(List<Person>));
+            using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync("SlateUsers"))
+
+            {
+                slateUsersReadList = (List<Person>)Serializer.ReadObject(stream);
+            }
+            slateUsers.AddRange(slateUsersReadList);
+        }        
 
         /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
         public static void writePersonObjects()
