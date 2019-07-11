@@ -31,46 +31,29 @@ namespace TaskSlateApp
     {
 
         public static List<Person> slateUsers = new List<Person>() { };
-        
         public static string defaultAlarm = "12:00 PM";
 
         public MainPage()
         {
             this.InitializeComponent();
-                        
+
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
             dtClockTime.Start();
 
             readPersonObjects();
-                        
-            if (slateUsers.Count!=0)
-            {                
-                ClearScreen();
-                CheckBoxStackPanel.Visibility = Visibility.Visible;
-                slateUsers[1].IsActivePerson = true;
-                ShowTaskList(slateUsers[1].Tasks);
-            } else
-            {
-                //Start off with default person with a default task - if no person exists
-                //upon load during start of app - who could then be renamed by rename button
-                Person defaultPerson = new Person("Default Person");
-                slateUsers.Add(defaultPerson);
-                defaultPerson.IsActivePerson = true;
+            ClearScreen();
+            CheckBoxStackPanel.Visibility = Visibility.Visible;
+            InitialLoad();
+        }
 
-                Task defaultTask = new Task("Task1", defaultAlarm);
-
-                List<Task> defaultTaskList = new List<Task>() { defaultTask };
-
-                //Add default task list to task list in person object
-                defaultPerson.Tasks.AddRange(defaultTaskList);
-
-                ShowTaskList(defaultPerson.Tasks);
-            }       
-
-            //Add button to person menu to rename person or task
-            //THIS IS EXTRA FEATURE SAVE FOR LAST
+        public void InitialLoad()
+        {
+            PersonAndDate.Text = "";
+            MainTextBlock.Visibility = Visibility.Visible;
+            CollapseAddRemoveButtons();
+            MainTextBlock.Text = "Welcome to TaskSlate!!!";//Here's a string to globalize for requirement
         }
 
         private void ShowTaskList(List<Task> Tasks)//need to pass active person.tasks in here
@@ -162,6 +145,7 @@ namespace TaskSlateApp
             TaskAlarmsStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             AddTextRelativePanel.Visibility = Visibility.Collapsed;
+            MainTextBlock.Visibility = Visibility.Collapsed;
         }
 
         private void CollapseAddRemoveButtons()
@@ -300,6 +284,7 @@ namespace TaskSlateApp
                     slateUsers[0].IsActivePerson = true;
                 }
             }
+            writePersonObjects();
         }
 
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
@@ -414,6 +399,7 @@ namespace TaskSlateApp
 
         public async void readPersonObjects()
         {
+            slateUsers.Clear();
             List<Person> slateUsersReadList = new List<Person>();
             var Serializer = new DataContractSerializer(typeof(List<Person>));
             using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync("SlateUsers"))
@@ -421,59 +407,32 @@ namespace TaskSlateApp
             {
                 slateUsersReadList = (List<Person>)Serializer.ReadObject(stream);
             }
+            //slateUsers.Clear();         
             slateUsers.AddRange(slateUsersReadList);
-        }        
 
-        /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
-        public static void writePersonObjects()
-        {            
-            FileStream fileStream = new FileStream(@"slateUsers.xml", FileMode.Create);
-            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Person));
-            dataContractSerializer.WriteObject(fileStream, slateUsers);
-            //fileStream.Close();
-        }
-        
-        public static void readPersonObjects()
-        {            
-            FileStream fileStream = new FileStream(@"slateUsers.xml", FileMode.Open);
-            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fileStream, new XmlDictionaryReaderQuotas());
-            DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Person));
-
-            // Deserialize the data and read it from the instance.
-            List<Person> slateUsers = (List<Person>)dataContractSerializer.ReadObject(reader, true);
-            //reader.Close();
-            //fileStream.Close();            
-        }
-        */
-
-        /* DO NOT DELETE THIS - DOES NOT WORK ON THIS WUP APP
-        public void writePersonObjects()
-        {
-            using (Stream fs = new FileStream(@"C:\slateUsers.xml",
-                FileMode.Create, FileAccess.Write, FileShare.None))
+            if (slateUsers.Count != 0)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
-                serializer.Serialize(fs, slateUsers);
+                slateUsers[0].IsActivePerson = true;
+            }
+            else if (slateUsers.Count == 0)
+            {
+                //Start off with default person with a default task - if no person exists
+                //upon load during start of app - who could then be renamed by rename button
+                Person defaultPerson = new Person("Default Person");
+
+                defaultPerson.IsActivePerson = true;
+
+                Task defaultTask = new Task("Task1", defaultAlarm);
+
+                List<Task> defaultTaskList = new List<Task>() { defaultTask };
+
+                //Add default task list to task list in person object
+                defaultPerson.Tasks.AddRange(defaultTaskList);
+                slateUsers.Add(defaultPerson);
+                //ShowTaskList(defaultPerson.Tasks);
             }
         }
-
-        public List<Person> readPersonObjects()
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Person>));
-
-            using (FileStream fs2 = File.OpenRead(@"C:\slateUsers.xml"))
-            {
-                return slateUsers = (List<Person>)serializer.Deserialize(fs2);
-            }
-        }
-        */
     }
-
-    //Look into DataContractSerializer Class to serialize and deserialize into XML stream or document
-    //for saving the data inside the slateUsers list and the nested Tasks list inside each person
-    //try the example at this site, just use foreach loop and don't writer.Close until all are
-    //serialized / deserialized
-    //https://docs.microsoft.com/en-us/dotnet/api/system.runtime.serialization.datacontractserializer?redirectedfrom=MSDN&view=netframework-4.8
 
     [DataContract]
     public class Person

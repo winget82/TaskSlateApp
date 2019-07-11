@@ -149,7 +149,14 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-
+        <TextBlock x:Name="MainTextBlock" HorizontalAlignment="Center" Height="379" Margin="0,120,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="48" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="1"/>
+                    <GradientStop Color="#FF03FF23" Offset="0"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
     </Grid>
 
 </Page>
