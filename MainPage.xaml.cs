@@ -32,7 +32,7 @@ namespace TaskSlateApp
 
         public static List<Person> slateUsers = new List<Person>() { };
         public static string defaultAlarm = "12:00 PM";
-
+        
         public MainPage()
         {
             this.InitializeComponent();
@@ -84,6 +84,7 @@ namespace TaskSlateApp
                 //in the styling - SAVE FOR LAST
 
                 Button button = new Button();
+                button.Name = task.TaskName;
                 button.Content = task.AlarmTime;
                 button.Height = 32;
                 button.Foreground = new SolidColorBrush(Colors.White);
@@ -146,10 +147,11 @@ namespace TaskSlateApp
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             AddTextRelativePanel.Visibility = Visibility.Collapsed;
             MainTextBlock.Visibility = Visibility.Collapsed;
+            AlarmTimePickerGrid.Visibility = Visibility.Collapsed;
         }
 
         private void CollapseAddRemoveButtons()
-        {
+        {            
             AddButton.Visibility = Visibility.Collapsed;
             AddButtonText.Visibility = Visibility.Collapsed;
             RemoveButton.Visibility = Visibility.Collapsed;
@@ -157,7 +159,7 @@ namespace TaskSlateApp
         }
 
         private void ShowAddRemoveButtons()
-        {
+        {            
             AddButton.Visibility = Visibility.Visible;
             AddButtonText.Visibility = Visibility.Visible;
             RemoveButton.Visibility = Visibility.Visible;
@@ -178,6 +180,7 @@ namespace TaskSlateApp
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             CollapseAddRemoveButtons();
+            //look into calender view and toast alarm
         }
 
         private void DtClockTime_Tick(object sender, object e)
@@ -367,18 +370,12 @@ namespace TaskSlateApp
 
         private void TaskAlarmButton_Click(object sender, RoutedEventArgs e)
         {
-
+            AlarmTimePickerGrid.Visibility = Visibility.Visible;
+            TimePicker alarmTimePicker = new TimePicker();
         }
 
         public async void writePersonObjects()
-        {
-            /*
-            List<WebUrls> objUrlsList = new List<WebUrls>();
-            objUrlsList.Add(new WebUrls { Url_ID = "1", UrlName = "http://bing.com" });
-            objUrlsList.Add(new WebUrls { Url_ID = "0", UrlName = "http://microsoft.com" });
-            objUrlsList.Add(new WebUrls { Url_ID = "2", UrlName = "http://bsubramanyamraju.blogspot.in/" });
-            */
-
+        {          
             StorageFile slateUsersFile = await ApplicationData.Current.LocalFolder.CreateFileAsync
                 ("SlateUsers", CreationCollisionOption.ReplaceExisting);
 
@@ -432,8 +429,41 @@ namespace TaskSlateApp
                 //ShowTaskList(defaultPerson.Tasks);
             }
         }
-    }
 
+        private void AlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
+        {
+            //get time from time picker
+            TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
+            DateTime time = DateTime.Today.Add(timeSpan);
+            string selectedTimeString = time.ToString("hh:mm tt");
+
+            //need to update the actual value of person.task.AlarmTime
+            string alarmTaskName = (sender as Button).Name;
+
+            //this will refresh buttons
+            ClearScreen();
+            CheckBoxStackPanel.Visibility = Visibility.Visible;
+
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    //search through active person's task list for match to alarmTaskName
+
+
+                    //then set task.AlarmTime = selectedTimeString
+
+                    //also set task.AlarmTimeSpan = timeSpan
+
+
+                    //alarm function will need to be determined in another method to be triggered by that property
+
+                    ShowTaskList(person.Tasks);
+                }
+            }
+        }
+    }
+        
     [DataContract]
     public class Person
     {
@@ -469,6 +499,9 @@ namespace TaskSlateApp
 
         [DataMember]
         public string AlarmTime { get; set; }
+
+        [DataMember]
+        TimeSpan AlarmTimeSpan { get; set; }
 
         [DataMember]
         public bool AlarmSet { get; set; }

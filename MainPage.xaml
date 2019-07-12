@@ -112,9 +112,19 @@
             </Button>
         </RelativePanel>
 
-        <!--Grid for add button can NOT get to collapse or clear???-->
-        <Grid x:Name="AddButtonGrid" HorizontalAlignment="Center" Height="66" Margin="0,564,0,0" VerticalAlignment="Top" Width="340"/>
-        <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,50" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
+        <RelativePanel x:Name="AlarmTimePickerGrid" HorizontalAlignment="Center" Height="60" Margin="0,0,0,76" VerticalAlignment="Bottom" Width="340">
+            <TimePicker x:Name="AlarmTimePicker" HorizontalAlignment="Center"/>
+            <Button x:Name="AlarmTimePickerButton" Content="Add" RelativePanel.RightOf="AlarmTimePicker" Height="32" Width="67" FontSize="18" VerticalAlignment="Center" Click="AlarmTimePickerButton_Click">
+                <Button.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="1"/>
+                        <GradientStop Color="#FF03FF23" Offset="0"/>
+                    </LinearGradientBrush>
+                </Button.Foreground>
+            </Button>
+        </RelativePanel>
+
+        <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,45" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -123,7 +133,7 @@
             </Button.Foreground>
         </Button>
 
-        <TextBlock x:Name="AddButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,50" Text="Add Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="299" TextAlignment="Left" FontSize="20" FontFamily="Times New Roman">
+        <TextBlock x:Name="AddButtonText" HorizontalAlignment="Left" Height="26" Margin="50,0,0,45" Text="Add Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="299" TextAlignment="Left" FontSize="20" FontFamily="Times New Roman">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -132,7 +142,7 @@
             </TextBlock.Foreground>
         </TextBlock>
 
-        <Button x:Name="RemoveButton" Content="-" Height="26" Margin="10,0,0,17" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="RemoveButton_Click" FontSize="20" Padding="0,0,0,0">
+        <Button x:Name="RemoveButton" Content="-" Height="26" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="RemoveButton_Click" FontSize="20" Padding="0,0,0,0" Margin="10,0,0,9">
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -141,7 +151,7 @@
             </Button.Foreground>
         </Button>
 
-        <TextBlock x:Name="RemoveButtonText" HorizontalAlignment="Left" Height="26" Margin="40,0,0,18" Text="Remove Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="298" TextAlignment="Left" FontSize="20" FontFamily="Segoe UI">
+        <TextBlock x:Name="RemoveButtonText" HorizontalAlignment="Left" Height="26" Margin="51,0,0,11" Text="Remove Task" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="298" TextAlignment="Left" FontSize="20" FontFamily="Segoe UI">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -149,6 +159,7 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
+
         <TextBlock x:Name="MainTextBlock" HorizontalAlignment="Center" Height="379" Margin="0,120,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="48" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
