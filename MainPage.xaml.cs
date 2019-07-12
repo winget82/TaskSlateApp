@@ -31,8 +31,8 @@ namespace TaskSlateApp
     {
 
         public static List<Person> slateUsers = new List<Person>() { };
-        public static string defaultAlarm = "12:00 PM";
-        
+        public static string buttonFlow;
+                        
         public MainPage()
         {
             this.InitializeComponent();
@@ -70,9 +70,7 @@ namespace TaskSlateApp
             {
                 CheckBox checkbox = new CheckBox();
                 checkbox.Name = task.TaskName;
-                checkbox.Content = task.TaskName;
-                //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
-                //of each of the generated checkboxes
+                checkbox.Content = task.TaskName;                
                 checkbox.Height = 31;
                 checkbox.FontFamily = new FontFamily("Segoe UI");
                 checkbox.FontSize = 20;
@@ -84,7 +82,7 @@ namespace TaskSlateApp
                 //in the styling - SAVE FOR LAST
 
                 Button button = new Button();
-                button.Name = task.TaskName;
+                button.Name = task.TaskName;                
                 button.Content = task.AlarmTime;
                 button.Height = 32;
                 button.Foreground = new SolidColorBrush(Colors.White);
@@ -99,6 +97,7 @@ namespace TaskSlateApp
         {
             ClearScreen();
             CheckBoxStackPanel.Visibility = Visibility.Visible;
+            ShowAddRemoveButtons();
 
             foreach (Person person in slateUsers)
             {
@@ -168,8 +167,9 @@ namespace TaskSlateApp
 
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
         {
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
+            //CheckBoxStackPanel.Children.Clear();
+            //ButtonStackPanel.Children.Clear();
+            ClearScreen();
             TaskSlateCalendar.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
         }
@@ -355,7 +355,7 @@ namespace TaskSlateApp
                 {
                     if (person.IsActivePerson)
                     {
-                        Task task = new Task(text, defaultAlarm);
+                        Task task = new Task(text);
                         person.Tasks.Add(task);
                         //refresh tasks
                         ShowTaskList(person.Tasks);
@@ -371,6 +371,7 @@ namespace TaskSlateApp
         private void TaskAlarmButton_Click(object sender, RoutedEventArgs e)
         {
             AlarmTimePickerGrid.Visibility = Visibility.Visible;
+            buttonFlow = (sender as Button).Name;
             TimePicker alarmTimePicker = new TimePicker();
         }
 
@@ -404,7 +405,7 @@ namespace TaskSlateApp
             {
                 slateUsersReadList = (List<Person>)Serializer.ReadObject(stream);
             }
-            //slateUsers.Clear();         
+            
             slateUsers.AddRange(slateUsersReadList);
 
             if (slateUsers.Count != 0)
@@ -419,7 +420,7 @@ namespace TaskSlateApp
 
                 defaultPerson.IsActivePerson = true;
 
-                Task defaultTask = new Task("Task1", defaultAlarm);
+                Task defaultTask = new Task("Task1");
 
                 List<Task> defaultTaskList = new List<Task>() { defaultTask };
 
@@ -434,33 +435,32 @@ namespace TaskSlateApp
         {
             //get time from time picker
             TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
-            DateTime time = DateTime.Today.Add(timeSpan);
+            DateTime time = DateTime.Today.Add(timeSpan);            
             string selectedTimeString = time.ToString("hh:mm tt");
 
-            //need to update the actual value of person.task.AlarmTime
-            string alarmTaskName = (sender as Button).Name;
-
-            //this will refresh buttons
-            ClearScreen();
-            CheckBoxStackPanel.Visibility = Visibility.Visible;
-
-            foreach (Person person in slateUsers)
+            foreach (Button button in TaskAlarmsStackPanel.Children)
             {
-                if (person.IsActivePerson)
+                foreach (Person person in slateUsers)
                 {
-                    //search through active person's task list for match to alarmTaskName
-
-
-                    //then set task.AlarmTime = selectedTimeString
-
-                    //also set task.AlarmTimeSpan = timeSpan
-
-
-                    //alarm function will need to be determined in another method to be triggered by that property
-
+                    if (person.IsActivePerson)
+                    {                                            
+                        //search through active person's task list for match to alarmTaskName
+                        foreach (Task task in person.Tasks)
+                        {
+                            //button name gets reset upon initial opening
+                            //This is why buttonFlow is used to designate the last button clicked
+                            if (buttonFlow.Equals(task.TaskName))//if the green alarm button's name matches the task name
+                            {
+                                task.AlarmTime = selectedTimeString;
+                                task.AlarmDateTime = time;//this isn't getting correct date - SEE DEBUGGER                                
+                            }
+                        }
+                        //alarm function will need to be determined in another method to be triggered by that property          
+                    }
                     ShowTaskList(person.Tasks);
                 }
             }
+            writePersonObjects();
         }
     }
         
@@ -501,17 +501,19 @@ namespace TaskSlateApp
         public string AlarmTime { get; set; }
 
         [DataMember]
-        TimeSpan AlarmTimeSpan { get; set; }
+        public DateTime AlarmDateTime { get; set; }
 
         [DataMember]
         public bool AlarmSet { get; set; }
 
-        public Task(string taskName, string alarmTime, bool isCompleted=false, bool alarmSet=false)
+        public Task(string taskName, string alarmTime = "12:00 PM", bool isCompleted=false, bool alarmSet=false)
         {
             TaskName = taskName;
             IsComplete = isCompleted;
             AlarmTime = alarmTime;
-            AlarmSet = alarmSet;
+            AlarmSet = alarmSet;            
         }
     }
 }
+
+//need a way to not have an alarm set on a task - SAVE FOR LAST
