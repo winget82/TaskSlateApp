@@ -48,12 +48,32 @@ namespace TaskSlateApp
             InitialLoad();
         }
 
-        public void InitialLoad()
+        private void InitialLoad()
         {
             PersonAndDate.Text = "";
             MainTextBlock.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
             MainTextBlock.Text = "Welcome to TaskSlate!!!";//Here's a string to globalize for requirement
+        }
+
+        //https://www.youtube.com/watch?v=GJbVEZkeImk
+        //https://stackoverflow.com/questions/32592841/how-play-a-mp3-or-other-file-in-a-uwp-app
+        //DateTime - https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8
+        //May need to do this with ringtone files? - https://stackoverflow.com/questions/43813588/saving-an-image-asset-to-a-storage-file-in-a-local-folder-in-uwp
+
+        private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
+        {
+            if (currentTime.Year==taskAlarmDateTime.Year && currentTime.Month==taskAlarmDateTime.Month
+                && currentTime.Day==taskAlarmDateTime.Day && currentTime.Hour==taskAlarmDateTime.Hour
+                && currentTime.Minute==taskAlarmDateTime.Minute)
+            {
+                //play sound looping until click button to stop
+                SoundPlayer.Source = soundSourceFileLocation;
+                //WHOLE MP3 NOT PLAYING BECAUSE THE METHOD THAT TRIGGERS THIS METHOD GOES OFF EVERY SECOND
+                //SO IT RESTARTS EVERY SECOND - NEED TO FIGURE OUT A SOLUTION FOR THIS
+                                
+                //need to set a button up to stop alarm
+            }
         }
 
         private void ShowTaskList(List<Task> Tasks)//need to pass active person.tasks in here
@@ -187,7 +207,8 @@ namespace TaskSlateApp
 
         private void DtClockTime_Tick(object sender, object e)
         {
-            CurrentTimeText.Text = DateTime.Now.ToString("hh:mm tt");
+            DateTime currentTime = DateTime.Now;
+            CurrentTimeText.Text = currentTime.ToString("hh:mm tt");
 
             //if person in person list is active person than put name at top of screen         
             foreach (Person person in slateUsers)
@@ -195,6 +216,11 @@ namespace TaskSlateApp
                 if (person.IsActivePerson)
                 {
                     PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                }
+                //Alarm to go off whether person is active or not
+                foreach (Task task in person.Tasks)
+                {
+                    PlayAlarm(currentTime, task.AlarmDateTime, person.AlarmFileSetting);
                 }
             }
         }
@@ -479,7 +505,10 @@ namespace TaskSlateApp
 
         [DataMember]
         public bool IsActivePerson { get; set; }
+        
         //AlarmSetting
+        [DataMember]
+        public Uri AlarmFileSetting { get; set; }
 
         public Person(string name, List<Task> tasks = null, bool activePerson=false)
         {
@@ -487,6 +516,7 @@ namespace TaskSlateApp
             Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
             //AlarmSetting
+            Uri AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
         }
     }
 
@@ -519,5 +549,3 @@ namespace TaskSlateApp
         }
     }
 }
-
-//need a way to not have an alarm set on a task - SAVE FOR LAST

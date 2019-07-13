@@ -168,7 +168,10 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
+        
+        <!--MediaElement for alarm-->
+        <MediaElement x:Name="SoundPlayer" AutoPlay="True"/>
     </Grid>
-
+    
 </Page>
 
