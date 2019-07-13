@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Windows.Storage.Streams;
+using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -61,11 +62,6 @@ namespace TaskSlateApp
             MainTextBlock.Text = "Welcome to TaskSlate!!!";//Here's a string to globalize for requirement
         }
 
-        //https://www.youtube.com/watch?v=GJbVEZkeImk
-        //https://stackoverflow.com/questions/32592841/how-play-a-mp3-or-other-file-in-a-uwp-app
-        //DateTime - https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8
-        //May need to do this with ringtone files? - https://stackoverflow.com/questions/43813588/saving-an-image-asset-to-a-storage-file-in-a-local-folder-in-uwp
-
         private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
         {
             if (currentTime.Year==taskAlarmDateTime.Year && currentTime.Month==taskAlarmDateTime.Month
@@ -74,9 +70,10 @@ namespace TaskSlateApp
             {
                 //play sound looping until click button to stop
                 SoundPlayer.Source = soundSourceFileLocation;
-                //THIS IS NOT PICKING UP THE URI, THERE IS NO URI SHOWING UP IN THE PERSON'S TASK.ALARMFILESETTING
+                //SOMETIMES THIS IS NOT PICKING UP THE URI, THERE IS NO URI SHOWING UP IN THE PERSON'S TASK.ALARMFILESETTING
                                                 
-                //need to set a button up to stop alarm                
+                //need to set a button up to stop alarm   
+                //SOMETIMES CANNOT ADD OR REMOVE TASKS WHILE SONG IS PLAYING
             }
         }
 
@@ -116,7 +113,65 @@ namespace TaskSlateApp
                 TaskAlarmsStackPanel.Children.Add(button);
             }
         }
+        
+        private void ClearScreen()
+        {
+            CheckBoxStackPanel.Children.Clear();
+            ButtonStackPanel.Children.Clear();
+            TaskAlarmsStackPanel.Children.Clear();
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            AddTextRelativePanel.Visibility = Visibility.Collapsed;
+            MainTextBlock.Visibility = Visibility.Collapsed;
+            AlarmTimePickerGrid.Visibility = Visibility.Collapsed;
+            MainTextBlock.Visibility = Visibility.Collapsed;
+            CalendarAlarmTimePickerGrid.Visibility = Visibility.Collapsed;
+        }
 
+        private void CollapseAddRemoveButtons()
+        {
+            AddButton.Visibility = Visibility.Collapsed;
+            AddButtonText.Visibility = Visibility.Collapsed;
+            RemoveButton.Visibility = Visibility.Collapsed;
+            RemoveButtonText.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowAddRemoveButtons()
+        {
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
+            RemoveButton.Visibility = Visibility.Visible;
+            RemoveButtonText.Visibility = Visibility.Visible;
+        }
+        
+        private void DtClockTime_Tick(object sender, object e)
+        {
+            DateTime currentTime = DateTime.Now;
+            CurrentTimeText.Text = currentTime.ToString("hh:mm tt");
+
+            //if person in person list is active person than put name at top of screen         
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                }
+            }
+        }
+
+        private void AlarmClockTime_Tick(object sender, object e)
+        {
+            DateTime currentTime = DateTime.Now;
+
+            foreach (Person person in slateUsers)
+            {
+                //Alarm to go off whether person is active or not
+                foreach (Task task in person.Tasks)
+                {
+                    PlayAlarm(currentTime, task.AlarmDateTime, person.AlarmFileSetting);
+                }
+            }
+        }
+        
         public void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             ClearScreen();
@@ -162,34 +217,6 @@ namespace TaskSlateApp
             }
         }
 
-        private void ClearScreen()
-        {
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
-            TaskAlarmsStackPanel.Children.Clear();
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
-            AddTextRelativePanel.Visibility = Visibility.Collapsed;
-            MainTextBlock.Visibility = Visibility.Collapsed;
-            AlarmTimePickerGrid.Visibility = Visibility.Collapsed;
-            MainTextBlock.Visibility = Visibility.Collapsed;
-        }
-
-        private void CollapseAddRemoveButtons()
-        {            
-            AddButton.Visibility = Visibility.Collapsed;
-            AddButtonText.Visibility = Visibility.Collapsed;
-            RemoveButton.Visibility = Visibility.Collapsed;
-            RemoveButtonText.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowAddRemoveButtons()
-        {            
-            AddButton.Visibility = Visibility.Visible;
-            AddButtonText.Visibility = Visibility.Visible;
-            RemoveButton.Visibility = Visibility.Visible;
-            RemoveButtonText.Visibility = Visibility.Visible;
-        }
-
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
         {
             //CheckBoxStackPanel.Children.Clear();
@@ -209,48 +236,6 @@ namespace TaskSlateApp
 
             //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
             //new Uri("ms-appx:///Assets/zoras_domain.mp3");
-        }
-
-        private void DtClockTime_Tick(object sender, object e)
-        {
-            DateTime currentTime = DateTime.Now;
-            CurrentTimeText.Text = currentTime.ToString("hh:mm tt");
-
-            //if person in person list is active person than put name at top of screen         
-            foreach (Person person in slateUsers)
-            {
-                if (person.IsActivePerson)
-                {
-                    PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
-                }                
-            }
-        }
-
-        private void AlarmClockTime_Tick(object sender, object e)
-        {
-            DateTime currentTime = DateTime.Now;
-            
-            foreach (Person person in slateUsers)
-            {                
-                //Alarm to go off whether person is active or not
-                foreach (Task task in person.Tasks)
-                {
-                    PlayAlarm(currentTime, task.AlarmDateTime, person.AlarmFileSetting);
-                }
-            }
-        }
-
-        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //Here is what happens when TaskCheckBox_Checked
-            //Change font to strikethrough text
-            /*
-            CheckBox senderButtonName = (sender as CheckBox);
-            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
-            senderButtonName.Content = TextDecorations.Strikethrough;
-            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
-            //of each of the generated checkboxes
-            */
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -418,6 +403,59 @@ namespace TaskSlateApp
             TimePicker alarmTimePicker = new TimePicker();
         }
 
+        private void AlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            //get time from time picker
+            TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
+            DateTime time = DateTime.Today.Add(timeSpan);
+            string selectedTimeString = time.ToString("hh:mm tt");
+
+            foreach (Button button in TaskAlarmsStackPanel.Children)
+            {
+                foreach (Person person in slateUsers)
+                {
+                    if (person.IsActivePerson)
+                    {
+                        //search through active person's task list for match to alarmTaskName
+                        foreach (Task task in person.Tasks)
+                        {
+                            //button name gets reset upon initial opening
+                            //This is why buttonFlow is used to designate the last button clicked
+                            if (buttonFlow.Equals(task.TaskName))//if the green alarm button's name matches the task name
+                            {
+                                task.AlarmTime = selectedTimeString;
+                                task.AlarmDateTime = time;
+                                task.AlarmSet = true;
+                            }
+                        }
+                        //alarm function will need to be determined in another method to be triggered by that property          
+                        ClearScreen();
+                        ShowTaskList(person.Tasks);
+                    }
+                }
+            }
+            writePersonObjects();
+        }
+
+        private void CalendarAlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            //Here is what happens when TaskCheckBox_Checked
+            //Change font to strikethrough text
+            /*
+            CheckBox senderButtonName = (sender as CheckBox);
+            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
+            senderButtonName.Content = TextDecorations.Strikethrough;
+            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
+            //of each of the generated checkboxes
+            */
+        }
+
         public async void writePersonObjects()
         {          
             StorageFile slateUsersFile = await ApplicationData.Current.LocalFolder.CreateFileAsync
@@ -474,41 +512,38 @@ namespace TaskSlateApp
             }
         }
 
-        private void AlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
+        private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
         {
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
-            //get time from time picker
-            TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
-            DateTime time = DateTime.Today.Add(timeSpan);            
-            string selectedTimeString = time.ToString("hh:mm tt");
+            //https://www.tutorialspoint.com/xaml/xaml_calender.htm
+            var calendar = (sender as CalendarView);
 
-            foreach (Button button in TaskAlarmsStackPanel.Children)
+            // ... See if a date is selected.
+            if (calendar.SelectedDates.Count != 0)
             {
-                foreach (Person person in slateUsers)
-                {
-                    if (person.IsActivePerson)
-                    {                                            
-                        //search through active person's task list for match to alarmTaskName
-                        foreach (Task task in person.Tasks)
-                        {
-                            //button name gets reset upon initial opening
-                            //This is why buttonFlow is used to designate the last button clicked
-                            if (buttonFlow.Equals(task.TaskName))//if the green alarm button's name matches the task name
-                            {
-                                task.AlarmTime = selectedTimeString;
-                                task.AlarmDateTime = time;
-                            }
-                        }
-                        //alarm function will need to be determined in another method to be triggered by that property          
-                        ClearScreen();
-                        ShowTaskList(person.Tasks);
-                    }                    
-                }
+                CalendarAlarmTimePickerGrid.Visibility = Visibility.Visible;
+                //Get the selected date 
+                DateTimeOffset dateTimeOffset = calendar.SelectedDates[0];
+                DateTime datePicked = dateTimeOffset.DateTime;
+
+                //turn on timepicker
+                
+                
+                TimePicker alarmTimePicker = new TimePicker();
+                /*
+                TimeSpan timeSpan = CalendarAlarmTimePicker.SelectedTime.Value;
+                DateTime time = DateTime.Today.Add(timeSpan);
+                string selectedTimeString = time.ToString("hh:mm tt");
+                */
+                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
+                string selectedDateString = datePicked.ToString("D");
+                CalendarTextBlock.Text = "Your selected date is: " + selectedDateString + ",\nat ";// + selectedTimeString + ".";
+
+                //need to turn on the timepicker to change the time of day of date picked
+
             }
-            writePersonObjects();
         }
     }
-        
+
     [DataContract]
     public class Person
     {
@@ -531,7 +566,7 @@ namespace TaskSlateApp
             Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
             //AlarmSetting
-            AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+            AlarmFileSetting = new Uri("ms-appx:///Assets/zoras_domain.mp3");
         }
     }
 
@@ -564,3 +599,8 @@ namespace TaskSlateApp
         }
     }
 }
+
+//https://www.youtube.com/watch?v=GJbVEZkeImk
+//https://stackoverflow.com/questions/32592841/how-play-a-mp3-or-other-file-in-a-uwp-app
+//DateTime - https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8
+//May need to do this with ringtone files? - https://stackoverflow.com/questions/43813588/saving-an-image-asset-to-a-storage-file-in-a-local-folder-in-uwp

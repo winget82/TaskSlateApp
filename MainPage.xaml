@@ -95,8 +95,23 @@
         </StackPanel>
 
         <!--Stack panel for calendar-->
-        <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
-            <CalendarView x:Name="TaskSlateCalendar" Height="290" Width="342" Background="Black" OutOfScopeForeground="White" SelectedForeground="#FF00D71D" PressedForeground="#FF00D71D" CalendarItemForeground="White" OutOfScopeBackground="Black" CalendarItemBackground="Black" BlackoutForeground="#FF27D700" Foreground="#CCFFFFFF" SelectedBorderBrush="#FF00D71D" SelectedPressedBorderBrush="#FF27D700" TodayForeground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FF27D700" FocusBorderBrush="#FF27D700" SelectedHoverBorderBrush="#FF27D700"/>
+        <StackPanel x:Name="CalendarStackPanel" HorizontalAlignment="Center" Height="510" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
+            <CalendarView x:Name="TaskSlateCalendar" Height="290" Width="342" Background="Black" OutOfScopeForeground="White" SelectedForeground="#FF00D71D" PressedForeground="#FF00D71D" CalendarItemForeground="White" OutOfScopeBackground="Black" CalendarItemBackground="Black" BlackoutForeground="#FF27D700" Foreground="#CCFFFFFF" SelectedBorderBrush="#FF00D71D" SelectedPressedBorderBrush="#FF27D700" TodayForeground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" FocusVisualPrimaryBrush="#FF27D700" FocusBorderBrush="#FF27D700" SelectedHoverBorderBrush="#FF27D700" SelectedDatesChanged="Calendar_SelectedDatesChanged"/>
+
+            <RelativePanel x:Name="CalendarAlarmTimePickerGrid" HorizontalAlignment="Center" Height="131" Margin="0,0,0,0" Width="340" VerticalAlignment="Top">
+                <TextBlock x:Name="CalendarTextBlock" Height="92" Text="TextBlock" TextWrapping="Wrap" Width="340" FontWeight="Bold" FontSize="14" FontFamily="Segoe UI" VerticalAlignment="Top"/>
+                <RelativePanel x:Name="CalendarAlarmTimePickerGridChild" Height="60" Width="340" RelativePanel.Below="CalendarTextBlock">
+                    <TimePicker x:Name="CalendarAlarmTimePicker" Height="40" Width="274"/>
+                    <Button x:Name="CalendarAlarmTimePickerButton" Content="Add" RelativePanel.RightOf="CalendarAlarmTimePicker" Height="32" Width="67" FontSize="18" VerticalAlignment="Center" Click="CalendarAlarmTimePickerButton_Click">
+                        <Button.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="Black" Offset="1"/>
+                                <GradientStop Color="#FF03FF23" Offset="0"/>
+                            </LinearGradientBrush>
+                        </Button.Foreground>
+                    </Button>
+                </RelativePanel>
+            </RelativePanel>
         </StackPanel>
 
         <!--Relative panel for text box and add button - need to determine how to keep it from overlapping checkboxes-->
@@ -168,11 +183,11 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        
+
         <!--MediaElement for alarm-->
         <MediaElement x:Name="SoundPlayer" AutoPlay="True"/>
-        
+
     </Grid>
-    
+
 </Page>
 
