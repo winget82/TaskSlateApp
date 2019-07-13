@@ -171,6 +171,7 @@
         
         <!--MediaElement for alarm-->
         <MediaElement x:Name="SoundPlayer" AutoPlay="True"/>
+        
     </Grid>
     
 </Page>

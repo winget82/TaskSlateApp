@@ -41,7 +41,12 @@ namespace TaskSlateApp
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
             dtClockTime.Start();
-
+            
+            DispatcherTimer alarmClockTime = new DispatcherTimer();
+            alarmClockTime.Interval = new TimeSpan(0, 0, 1);
+            alarmClockTime.Tick += new EventHandler<object>(AlarmClockTime_Tick);
+            alarmClockTime.Start();
+            
             readPersonObjects();
             ClearScreen();
             CheckBoxStackPanel.Visibility = Visibility.Visible;
@@ -69,10 +74,9 @@ namespace TaskSlateApp
             {
                 //play sound looping until click button to stop
                 SoundPlayer.Source = soundSourceFileLocation;
-                //WHOLE MP3 NOT PLAYING BECAUSE THE METHOD THAT TRIGGERS THIS METHOD GOES OFF EVERY SECOND
-                //SO IT RESTARTS EVERY SECOND - NEED TO FIGURE OUT A SOLUTION FOR THIS
-                                
-                //need to set a button up to stop alarm
+                //THIS IS NOT PICKING UP THE URI, THERE IS NO URI SHOWING UP IN THE PERSON'S TASK.ALARMFILESETTING
+                                                
+                //need to set a button up to stop alarm                
             }
         }
 
@@ -202,7 +206,9 @@ namespace TaskSlateApp
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             CollapseAddRemoveButtons();
             //make sure to clear/collapse and make visible all needed items
-            //look into calender view and toast alarm
+
+            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
         }
 
         private void DtClockTime_Tick(object sender, object e)
@@ -216,7 +222,16 @@ namespace TaskSlateApp
                 if (person.IsActivePerson)
                 {
                     PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
-                }
+                }                
+            }
+        }
+
+        private void AlarmClockTime_Tick(object sender, object e)
+        {
+            DateTime currentTime = DateTime.Now;
+            
+            foreach (Person person in slateUsers)
+            {                
                 //Alarm to go off whether person is active or not
                 foreach (Task task in person.Tasks)
                 {
@@ -362,7 +377,7 @@ namespace TaskSlateApp
                 ShowAddRemoveButtons();
 
                 foreach (Person person in slateUsers)
-                {
+                {                    
                     Button button = new Button();
                     button.Name = person.Name;
                     button.Content = person.Name;
@@ -481,7 +496,7 @@ namespace TaskSlateApp
                             if (buttonFlow.Equals(task.TaskName))//if the green alarm button's name matches the task name
                             {
                                 task.AlarmTime = selectedTimeString;
-                                task.AlarmDateTime = time;//this isn't getting correct date - SEE DEBUGGER                                
+                                task.AlarmDateTime = time;
                             }
                         }
                         //alarm function will need to be determined in another method to be triggered by that property          
@@ -516,7 +531,7 @@ namespace TaskSlateApp
             Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
             //AlarmSetting
-            Uri AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+            AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
         }
     }
 
