@@ -129,6 +129,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\macguyver.mp3" />
     <Content Include="Assets\tropical_iphone.mp3" />
     <Content Include="Assets\zoras_domain.mp3" />
     <Content Include="Properties\Default.rd.xml" />

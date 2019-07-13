@@ -44,7 +44,8 @@ namespace TaskSlateApp
             dtClockTime.Start();
             
             DispatcherTimer alarmClockTime = new DispatcherTimer();
-            alarmClockTime.Interval = new TimeSpan(0, 0, 20);
+            alarmClockTime.Interval = new TimeSpan(0, 0, 10);//alarm will start within 10 seconds of selected time
+            //and play for 10 seconds before repeating until minute changes to no longer match
             alarmClockTime.Tick += new EventHandler<object>(AlarmClockTime_Tick);
             alarmClockTime.Start();
             
@@ -461,19 +462,6 @@ namespace TaskSlateApp
             //MAY NEED TO USE GLOBAL VARIABLES IF YOU CAN'T FIGURE IT OUT
         }
 
-        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            //Here is what happens when TaskCheckBox_Checked
-            //Change font to strikethrough text
-            /*
-            CheckBox senderButtonName = (sender as CheckBox);
-            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
-            senderButtonName.Content = TextDecorations.Strikethrough;
-            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
-            //of each of the generated checkboxes
-            */
-        }
-
         private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
         {
             //https://www.tutorialspoint.com/xaml/xaml_calender.htm
@@ -494,6 +482,19 @@ namespace TaskSlateApp
                 string selectedDateString = datePicked.ToString("D");
                 CalendarTextBlock1.Text = "Your selected date is: " + selectedDateString + ",";
             }
+        }
+
+        private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            //Here is what happens when TaskCheckBox_Checked
+            //Change font to strikethrough text
+            /*
+            CheckBox senderButtonName = (sender as CheckBox);
+            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
+            senderButtonName.Content = TextDecorations.Strikethrough;
+            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
+            //of each of the generated checkboxes
+            */
         }
 
         public async void writePersonObjects()
@@ -575,7 +576,7 @@ namespace TaskSlateApp
             Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
             //AlarmSetting
-            AlarmFileSetting = new Uri("ms-appx:///Assets/zoras_domain.mp3");
+            AlarmFileSetting = new Uri("ms-appx:///Assets/macguyver.mp3");
         }
     }
 
@@ -609,7 +610,8 @@ namespace TaskSlateApp
     }
 }
 
-//https://www.youtube.com/watch?v=GJbVEZkeImk
-//https://stackoverflow.com/questions/32592841/how-play-a-mp3-or-other-file-in-a-uwp-app
 //DateTime - https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8
-//May need to do this with ringtone files? - https://stackoverflow.com/questions/43813588/saving-an-image-asset-to-a-storage-file-in-a-local-folder-in-uwp
+
+//UNICODE SUPPORT:
+//https://www.codeproject.com/Articles/885262/Reading-and-writing-Unicode-data-in-NET
+//".NET framework has a built-in support for Unicode characters; the char object in .NET framework represents a unicode character; UTF-16."
