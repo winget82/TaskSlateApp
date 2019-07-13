@@ -147,6 +147,7 @@ namespace TaskSlateApp
             AddTextRelativePanel.Visibility = Visibility.Collapsed;
             MainTextBlock.Visibility = Visibility.Collapsed;
             AlarmTimePickerGrid.Visibility = Visibility.Collapsed;
+            MainTextBlock.Visibility = Visibility.Collapsed;
         }
 
         private void CollapseAddRemoveButtons()
@@ -180,6 +181,7 @@ namespace TaskSlateApp
             ButtonStackPanel.Children.Clear();
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             CollapseAddRemoveButtons();
+            //make sure to clear/collapse and make visible all needed items
             //look into calender view and toast alarm
         }
 
@@ -433,6 +435,7 @@ namespace TaskSlateApp
 
         private void AlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
         {
+            TaskSlateCalendar.Visibility = Visibility.Collapsed;
             //get time from time picker
             TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
             DateTime time = DateTime.Today.Add(timeSpan);            
@@ -456,8 +459,9 @@ namespace TaskSlateApp
                             }
                         }
                         //alarm function will need to be determined in another method to be triggered by that property          
-                    }
-                    ShowTaskList(person.Tasks);
+                        ClearScreen();
+                        ShowTaskList(person.Tasks);
+                    }                    
                 }
             }
             writePersonObjects();
@@ -506,7 +510,7 @@ namespace TaskSlateApp
         [DataMember]
         public bool AlarmSet { get; set; }
 
-        public Task(string taskName, string alarmTime = "12:00 PM", bool isCompleted=false, bool alarmSet=false)
+        public Task(string taskName, string alarmTime = "OFF", bool isCompleted=false, bool alarmSet=false)
         {
             TaskName = taskName;
             IsComplete = isCompleted;
