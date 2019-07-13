@@ -30,10 +30,14 @@ namespace TaskSlateApp
 
     public sealed partial class MainPage : Page
     {
-
         public static List<Person> slateUsers = new List<Person>() { };
+
+        //Global variables for temporary storage and flow of logic
         public static string buttonFlow;
-                        
+        public static DateTime futureAlarmDate;
+        public static DateTime futureAlarmDayAndTime;
+        public static bool addDateFromCalendar = false;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -237,12 +241,20 @@ namespace TaskSlateApp
 
             //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
             //new Uri("ms-appx:///Assets/zoras_domain.mp3");
+            //new Uri("ms-appx:///Assets/macguyver.mp3");
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            //this is for the add button
-            AddTextRelativePanel.Visibility = Visibility.Visible;
+            if (addDateFromCalendar)
+            {
+                ClearScreen();
+                AddTextRelativePanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AddTextRelativePanel.Visibility = Visibility.Visible;
+            }            
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
@@ -350,9 +362,26 @@ namespace TaskSlateApp
 
             //clear text in addtextentrybox
             AddTextEntryBox.Text = clearText;
-
-            //or add it to slateUsers if adding a person
-            if (ButtonStackPanel.Visibility == Visibility.Visible)
+                        
+            if (addDateFromCalendar)
+            {
+                //add task to person.Tasks if that person is active
+                foreach (Person person in slateUsers)
+                {
+                    if (person.IsActivePerson)
+                    {
+                        Task task = new Task(text);
+                        task.AlarmDateTime = futureAlarmDayAndTime;
+                        task.AlarmTime = futureAlarmDayAndTime.ToString("MM/dd" + ", " + "hh:mm tt");
+                        task.AlarmSet = true;
+                        person.Tasks.Add(task);
+                        //refresh tasks
+                        ShowTaskList(person.Tasks);
+                    }
+                }
+                addDateFromCalendar = false;
+            }
+            else if (ButtonStackPanel.Visibility == Visibility.Visible)
             {
                 //add person to slateUsers
                 Person personNew = new Person(text);
@@ -447,19 +476,14 @@ namespace TaskSlateApp
             string selectedTimeString = time.ToString("hh:mm tt");
             CalendarTextBlock2.Text = "at " + selectedTimeString + ".";
 
-            //GET VALUE FROM CALENDAR DATETIMEOFFSET AND TIMESPAN FROM TIMEPICKER STORE IN VARIABLE
-            //MAY NEED TO USE GLOBAL VARIABLES IF YOU CAN'T FIGURE IT OUT
-
+            //Add time span to global variable that was acquired by Calendar_SelectedDatesChanged
+            futureAlarmDayAndTime = futureAlarmDate.Add(timeSpan);
+            
+            AddButtonText.Text = "Add Task";
             AddButton.Visibility = Visibility.Visible;
             AddButtonText.Visibility = Visibility.Visible;
 
-            //if calendar panel visible and other panels not when the add button clicked then (this will need to be in AddButton_Click)
-            //CLEAR THE CALENDAR PANEL FROM THE SCREEN, SHOW TEXT BUTTONS
-            //FOR ENTERING TASK - could use a global boolean variable in the add text entrybutton to decide how
-            //to control the flow, then at end of flow, reset the variable                    
-
-            //THEN POPULATE THE TASK'S ALARM TIME WITH THE VARIABLE
-            //MAY NEED TO USE GLOBAL VARIABLES IF YOU CAN'T FIGURE IT OUT
+            addDateFromCalendar = true;
         }
 
         private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
@@ -474,14 +498,15 @@ namespace TaskSlateApp
                 //Get the selected date 
                 DateTimeOffset dateTimeOffset = calendar.SelectedDates[0];
                 DateTime datePicked = dateTimeOffset.DateTime;
+                futureAlarmDate = datePicked.Date;
 
                 //turn on timepicker                                
                 TimePicker alarmTimePicker = new TimePicker();                
                 
                 //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
                 string selectedDateString = datePicked.ToString("D");
-                CalendarTextBlock1.Text = "Your selected date is: " + selectedDateString + ",";
-            }
+                CalendarTextBlock1.Text = "Your selected date is: " + selectedDateString + ",";                
+            }            
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -586,7 +611,6 @@ namespace TaskSlateApp
         [DataMember]
         public string TaskName { get; set; }
         
-
         [DataMember]
         public bool IsComplete { get; set; }
         //reocurrence could add new instances of object?
