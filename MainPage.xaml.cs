@@ -43,7 +43,7 @@ namespace TaskSlateApp
             dtClockTime.Start();
             
             DispatcherTimer alarmClockTime = new DispatcherTimer();
-            alarmClockTime.Interval = new TimeSpan(0, 0, 1);
+            alarmClockTime.Interval = new TimeSpan(0, 0, 20);
             alarmClockTime.Tick += new EventHandler<object>(AlarmClockTime_Tick);
             alarmClockTime.Start();
             
