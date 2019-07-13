@@ -441,6 +441,24 @@ namespace TaskSlateApp
         private void CalendarAlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
         {
 
+            TimeSpan timeSpan = CalendarAlarmTimePicker.SelectedTime.Value;
+            DateTime time = DateTime.Today.Add(timeSpan);
+            string selectedTimeString = time.ToString("hh:mm tt");
+            CalendarTextBlock2.Text = "at " + selectedTimeString + ".";
+
+            //GET VALUE FROM CALENDAR DATETIMEOFFSET AND TIMESPAN FROM TIMEPICKER STORE IN VARIABLE
+            //MAY NEED TO USE GLOBAL VARIABLES IF YOU CAN'T FIGURE IT OUT
+
+            AddButton.Visibility = Visibility.Visible;
+            AddButtonText.Visibility = Visibility.Visible;
+
+            //if calendar panel visible and other panels not when the add button clicked then (this will need to be in AddButton_Click)
+            //CLEAR THE CALENDAR PANEL FROM THE SCREEN, SHOW TEXT BUTTONS
+            //FOR ENTERING TASK - could use a global boolean variable in the add text entrybutton to decide how
+            //to control the flow, then at end of flow, reset the variable                    
+
+            //THEN POPULATE THE TASK'S ALARM TIME WITH THE VARIABLE
+            //MAY NEED TO USE GLOBAL VARIABLES IF YOU CAN'T FIGURE IT OUT
         }
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -456,8 +474,30 @@ namespace TaskSlateApp
             */
         }
 
+        private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
+        {
+            //https://www.tutorialspoint.com/xaml/xaml_calender.htm
+            var calendar = (sender as CalendarView);
+
+            // ... See if a date is selected.
+            if (calendar.SelectedDates.Count != 0)
+            {
+                CalendarAlarmTimePickerGrid.Visibility = Visibility.Visible;
+                //Get the selected date 
+                DateTimeOffset dateTimeOffset = calendar.SelectedDates[0];
+                DateTime datePicked = dateTimeOffset.DateTime;
+
+                //turn on timepicker                                
+                TimePicker alarmTimePicker = new TimePicker();                
+                
+                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
+                string selectedDateString = datePicked.ToString("D");
+                CalendarTextBlock1.Text = "Your selected date is: " + selectedDateString + ",";
+            }
+        }
+
         public async void writePersonObjects()
-        {          
+        {
             StorageFile slateUsersFile = await ApplicationData.Current.LocalFolder.CreateFileAsync
                 ("SlateUsers", CreationCollisionOption.ReplaceExisting);
 
@@ -486,7 +526,7 @@ namespace TaskSlateApp
             {
                 slateUsersReadList = (List<Person>)Serializer.ReadObject(stream);
             }
-            
+
             slateUsers.AddRange(slateUsersReadList);
 
             if (slateUsers.Count != 0)
@@ -509,37 +549,6 @@ namespace TaskSlateApp
                 defaultPerson.Tasks.AddRange(defaultTaskList);
                 slateUsers.Add(defaultPerson);
                 //ShowTaskList(defaultPerson.Tasks);
-            }
-        }
-
-        private void Calendar_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
-        {
-            //https://www.tutorialspoint.com/xaml/xaml_calender.htm
-            var calendar = (sender as CalendarView);
-
-            // ... See if a date is selected.
-            if (calendar.SelectedDates.Count != 0)
-            {
-                CalendarAlarmTimePickerGrid.Visibility = Visibility.Visible;
-                //Get the selected date 
-                DateTimeOffset dateTimeOffset = calendar.SelectedDates[0];
-                DateTime datePicked = dateTimeOffset.DateTime;
-
-                //turn on timepicker
-                
-                
-                TimePicker alarmTimePicker = new TimePicker();
-                /*
-                TimeSpan timeSpan = CalendarAlarmTimePicker.SelectedTime.Value;
-                DateTime time = DateTime.Today.Add(timeSpan);
-                string selectedTimeString = time.ToString("hh:mm tt");
-                */
-                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
-                string selectedDateString = datePicked.ToString("D");
-                CalendarTextBlock.Text = "Your selected date is: " + selectedDateString + ",\nat ";// + selectedTimeString + ".";
-
-                //need to turn on the timepicker to change the time of day of date picked
-
             }
         }
     }
