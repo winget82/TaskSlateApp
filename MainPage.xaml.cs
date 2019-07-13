@@ -130,6 +130,7 @@ namespace TaskSlateApp
             AlarmTimePickerGrid.Visibility = Visibility.Collapsed;
             MainTextBlock.Visibility = Visibility.Collapsed;
             CalendarAlarmTimePickerGrid.Visibility = Visibility.Collapsed;
+            AlarmSettingsStackPanel.Visibility = Visibility.Collapsed;
         }
 
         private void CollapseAddRemoveButtons()
@@ -233,15 +234,9 @@ namespace TaskSlateApp
 
         private void AlarmButton_Click(object sender, RoutedEventArgs e)
         {
-            CheckBoxStackPanel.Children.Clear();
-            ButtonStackPanel.Children.Clear();
-            TaskSlateCalendar.Visibility = Visibility.Collapsed;
+            ClearScreen();
             CollapseAddRemoveButtons();
-            //make sure to clear/collapse and make visible all needed items
-
-            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
-            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
-            //new Uri("ms-appx:///Assets/macguyver.mp3");
+            AlarmSettingsStackPanel.Visibility = Visibility.Visible;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -575,6 +570,42 @@ namespace TaskSlateApp
                 defaultPerson.Tasks.AddRange(defaultTaskList);
                 slateUsers.Add(defaultPerson);
                 //ShowTaskList(defaultPerson.Tasks);
+            }
+        }
+
+        private void MacGuyver_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/macguyver.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/macguyver.mp3");
+                }
+            }
+        }
+
+        private void ZorasDomain_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/zoras_domain.mp3");
+                }
+            }
+        }
+
+        private void Tropical_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+                }
             }
         }
     }
