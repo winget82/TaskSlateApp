@@ -539,6 +539,9 @@ namespace TaskSlateApp
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             //set task.alarmset to false and stop alarm playing
+
+            //SOMETHING NOT RIGHT IN THE LOGIC OF LOOPS BELOW, IT EVENTUALLY SETS ALL ALARM TIMES TO OFF FOR EACH TASK
+
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -553,15 +556,11 @@ namespace TaskSlateApp
                                 //stop alarm playing ringtone at end of ringtone
                                 task.AlarmSet = false;
                                 task.AlarmTime = "OFF";
-                                
+
                                 //strikethrough text
 
                             }
-                        }
-                        
-                        foreach (Button button in TaskAlarmsStackPanel.Children)
-                        {
-                            foreach (Task task in person.Tasks)
+                            foreach (Button button in TaskAlarmsStackPanel.Children)
                             {
                                 //if task.name matches checkbox text/content and if alarmtime != "OFF"
                                 if (checkBox.Name.Equals(button.Name) && button.Name.Equals(task.TaskName) && task.AlarmTime.Equals("OFF"))
@@ -590,7 +589,6 @@ namespace TaskSlateApp
             */
         }
 
-        
         private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             foreach (Person person in slateUsers)
