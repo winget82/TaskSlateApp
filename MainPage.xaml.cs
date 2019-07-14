@@ -55,7 +55,7 @@ namespace TaskSlateApp
             
             readPersonObjects();
             ClearScreen();
-            CheckBoxStackPanel.Visibility = Visibility.Visible;
+            //CheckBoxStackPanel.Visibility = Visibility.Visible;
             InitialLoad();
         }
 
@@ -69,16 +69,14 @@ namespace TaskSlateApp
 
         private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
         {
-            if (currentTime.Year==taskAlarmDateTime.Year && currentTime.Month==taskAlarmDateTime.Month
-                && currentTime.Day==taskAlarmDateTime.Day && currentTime.Hour==taskAlarmDateTime.Hour
-                && currentTime.Minute==taskAlarmDateTime.Minute)
+            if (currentTime.Year == taskAlarmDateTime.Year && currentTime.Month == taskAlarmDateTime.Month
+            && currentTime.Day == taskAlarmDateTime.Day && currentTime.Hour == taskAlarmDateTime.Hour
+            && currentTime.Minute == taskAlarmDateTime.Minute)
             {
                 //play sound looping until click button to stop
                 SoundPlayer.Source = soundSourceFileLocation;
-                //SOMETIMES THIS IS NOT PICKING UP THE URI, THERE IS NO URI SHOWING UP IN THE PERSON'S TASK.ALARMFILESETTING
-                                                
-                //need to set a button up to stop alarm   
-                //SOMETIMES CANNOT ADD OR REMOVE TASKS WHILE SONG IS PLAYING
+
+                //stop alarm by checking task
             }
         }
 
@@ -91,7 +89,8 @@ namespace TaskSlateApp
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
             RemoveButtonText.Text = "Remove Checked Task(s)";
-
+            
+            /*TO BE REMOVED AFTER REFACTORING IF NO ISSUES
             foreach (Task task in Tasks)
             {
                 CheckBox checkbox = new CheckBox();
@@ -106,7 +105,7 @@ namespace TaskSlateApp
 
                 //need to find a way to adjust the padding, justification, etc. in the stackpanel for each checkbox
                 //in the styling - SAVE FOR LAST
-
+                
                 Button button = new Button();
                 button.Name = task.TaskName;                
                 button.Content = task.AlarmTime;
@@ -116,9 +115,47 @@ namespace TaskSlateApp
                 button.Click += new RoutedEventHandler(TaskAlarmButton_Click);
 
                 TaskAlarmsStackPanel.Children.Add(button);
+                
+            }
+            */
+            RefreshTaskAlarmCheckboxList(Tasks);
+            RefreshTaskAlarmButtonsList(Tasks);
+        }
+
+        private void RefreshTaskAlarmCheckboxList(List<Task> Tasks)
+        {
+            CheckBoxStackPanel.Children.Clear();
+            foreach (Task task in Tasks)
+            {
+                CheckBox checkbox = new CheckBox();
+                checkbox.Name = task.TaskName;
+                checkbox.Content = task.TaskName;
+                checkbox.Height = 31;
+                checkbox.FontFamily = new FontFamily("Segoe UI");
+                checkbox.FontSize = 20;
+                checkbox.Checked += TaskCheckBox_Checked;
+
+                CheckBoxStackPanel.Children.Add(checkbox);
             }
         }
-        
+
+        private void RefreshTaskAlarmButtonsList(List<Task> Tasks)
+        {
+            TaskAlarmsStackPanel.Children.Clear();
+            foreach (Task task in Tasks)
+            {
+                Button button = new Button();
+                button.Name = task.TaskName;
+                button.Content = task.AlarmTime;
+                button.Height = 32;
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                button.Click += new RoutedEventHandler(TaskAlarmButton_Click);
+
+                TaskAlarmsStackPanel.Children.Add(button);
+            }
+        }
+
         private void ClearScreen()
         {
             CheckBoxStackPanel.Children.Clear();
@@ -173,7 +210,10 @@ namespace TaskSlateApp
                 //Alarm to go off whether person is active or not
                 foreach (Task task in person.Tasks)
                 {
-                    PlayAlarm(currentTime, task.AlarmDateTime, person.AlarmFileSetting);
+                    if (task.AlarmSet)
+                    {
+                        PlayAlarm(currentTime, task.AlarmDateTime, person.AlarmFileSetting);
+                    }
                 }
             }
         }
@@ -215,9 +255,6 @@ namespace TaskSlateApp
 
                 ButtonStackPanel.Children.Add(button);
 
-                //IF NO ONE EXISTS AT OPENING OF PROGRAM
-                //Start off with default person - who could then be renamed by rename button
-
                 //Add button to person menu to rename person, add button to person menu to delete person
                 //RENAME button is extra functionallity save it for last
             }
@@ -225,8 +262,6 @@ namespace TaskSlateApp
 
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
         {
-            //CheckBoxStackPanel.Children.Clear();
-            //ButtonStackPanel.Children.Clear();
             ClearScreen();
             TaskSlateCalendar.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
@@ -254,8 +289,6 @@ namespace TaskSlateApp
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            //this is for the remove button
-
             //copy slateUsers list to another list to enumerate in foreach statement and still be able
             //to modify slateUsers list
             List<Person> slateUsersCopy = new List<Person>(slateUsers);
@@ -414,8 +447,7 @@ namespace TaskSlateApp
                         ShowTaskList(person.Tasks);
                     }
                 }
-            }
-            //at end of this function change visibility of AddTextEntryButton and AddTextEntryBox back to collapsed
+            }            
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
             writePersonObjects();
@@ -453,8 +485,7 @@ namespace TaskSlateApp
                                 task.AlarmDateTime = time;
                                 task.AlarmSet = true;
                             }
-                        }
-                        //alarm function will need to be determined in another method to be triggered by that property          
+                        }                        
                         ClearScreen();
                         ShowTaskList(person.Tasks);
                     }
@@ -490,6 +521,7 @@ namespace TaskSlateApp
             if (calendar.SelectedDates.Count != 0)
             {
                 CalendarAlarmTimePickerGrid.Visibility = Visibility.Visible;
+
                 //Get the selected date 
                 DateTimeOffset dateTimeOffset = calendar.SelectedDates[0];
                 DateTime datePicked = dateTimeOffset.DateTime;
@@ -506,7 +538,48 @@ namespace TaskSlateApp
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            //Here is what happens when TaskCheckBox_Checked
+            //set task.alarmset to false and stop alarm playing
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
+                    {
+                        foreach (Task task in person.Tasks)
+                        {
+                            //if task.name matches checkbox text/content and if alarmtime != "OFF"
+                            if (checkBox.Name.Equals(task.TaskName) && !task.AlarmTime.Equals("OFF"))
+                            {
+                                //stop alarm playing ringtone at end of ringtone
+                                task.AlarmSet = false;
+                                task.AlarmTime = "OFF";
+                                
+                                //strikethrough text
+
+                            }
+                        }
+                        
+                        foreach (Button button in TaskAlarmsStackPanel.Children)
+                        {
+                            foreach (Task task in person.Tasks)
+                            {
+                                //if task.name matches checkbox text/content and if alarmtime != "OFF"
+                                if (checkBox.Name.Equals(button.Name) && button.Name.Equals(task.TaskName) && task.AlarmTime.Equals("OFF"))
+                                {
+                                    //stop alarm playing ringtone at end of ringtone
+                                    button.Content = "OFF";
+
+                                    //strikethrough text
+
+                                }
+                            }
+                        }
+                    }
+                    RefreshTaskAlarmButtonsList(person.Tasks);
+                }
+            }
+            writePersonObjects();
+
             //Change font to strikethrough text
             /*
             CheckBox senderButtonName = (sender as CheckBox);
@@ -515,6 +588,68 @@ namespace TaskSlateApp
             //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
             //of each of the generated checkboxes
             */
+        }
+
+        
+        private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (Person person in slateUsers)
+            {                
+                if (person.IsActivePerson)
+                {
+                    foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
+                    {                  
+                        foreach (Task task in person.Tasks)
+                        {
+                            //if task.name matches checkbox text/content and if alarmtime != "OFF"
+                            if (checkBox.Name.Equals(task.TaskName))
+                            {
+                                //unstrikethrough text
+
+                            }                            
+                        }
+                    }
+                    ClearScreen();
+                    ShowTaskList(person.Tasks);
+                }
+            }
+            writePersonObjects();
+        }
+
+        private void MacGuyver_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/macguyver.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/macguyver.mp3");
+                }
+            }
+        }
+
+        private void ZorasDomain_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/zoras_domain.mp3");
+                }
+            }
+        }
+
+        private void Tropical_Click(object sender, RoutedEventArgs e)
+        {
+            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+            foreach (Person person in slateUsers)
+            {
+                if (person.IsActivePerson)
+                {
+                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
+                }
+            }
         }
 
         public async void writePersonObjects()
@@ -573,41 +708,6 @@ namespace TaskSlateApp
             }
         }
 
-        private void MacGuyver_Click(object sender, RoutedEventArgs e)
-        {
-            //new Uri("ms-appx:///Assets/macguyver.mp3");
-            foreach (Person person in slateUsers)
-            {
-                if (person.IsActivePerson)
-                {
-                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/macguyver.mp3");
-                }
-            }
-        }
-
-        private void ZorasDomain_Click(object sender, RoutedEventArgs e)
-        {
-            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
-            foreach (Person person in slateUsers)
-            {
-                if (person.IsActivePerson)
-                {
-                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/zoras_domain.mp3");
-                }
-            }
-        }
-
-        private void Tropical_Click(object sender, RoutedEventArgs e)
-        {
-            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
-            foreach (Person person in slateUsers)
-            {
-                if (person.IsActivePerson)
-                {
-                    person.AlarmFileSetting = new Uri("ms-appx:///Assets/tropical_iphone.mp3");
-                }
-            }
-        }
     }
 
     [DataContract]
@@ -664,8 +764,6 @@ namespace TaskSlateApp
         }
     }
 }
-
-//DateTime - https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.8
 
 //UNICODE SUPPORT:
 //https://www.codeproject.com/Articles/885262/Reading-and-writing-Unicode-data-in-NET
