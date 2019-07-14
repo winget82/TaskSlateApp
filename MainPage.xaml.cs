@@ -55,7 +55,7 @@ namespace TaskSlateApp
             
             readPersonObjects();
             ClearScreen();
-            //CheckBoxStackPanel.Visibility = Visibility.Visible;
+            
             InitialLoad();
         }
 
@@ -89,35 +89,6 @@ namespace TaskSlateApp
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
             RemoveButtonText.Text = "Remove Checked Task(s)";
-            
-            /*TO BE REMOVED AFTER REFACTORING IF NO ISSUES
-            foreach (Task task in Tasks)
-            {
-                CheckBox checkbox = new CheckBox();
-                checkbox.Name = task.TaskName;
-                checkbox.Content = task.TaskName;                
-                checkbox.Height = 31;
-                checkbox.FontFamily = new FontFamily("Segoe UI");
-                checkbox.FontSize = 20;
-                checkbox.Checked += TaskCheckBox_Checked;
-
-                CheckBoxStackPanel.Children.Add(checkbox);
-
-                //need to find a way to adjust the padding, justification, etc. in the stackpanel for each checkbox
-                //in the styling - SAVE FOR LAST
-                
-                Button button = new Button();
-                button.Name = task.TaskName;                
-                button.Content = task.AlarmTime;
-                button.Height = 32;
-                button.Foreground = new SolidColorBrush(Colors.White);
-                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
-                button.Click += new RoutedEventHandler(TaskAlarmButton_Click);
-
-                TaskAlarmsStackPanel.Children.Add(button);
-                
-            }
-            */
             RefreshTaskAlarmCheckboxList(Tasks);
             RefreshTaskAlarmButtonsList(Tasks);
         }
@@ -312,25 +283,23 @@ namespace TaskSlateApp
 
                             foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
                             {
-                                if (checkBox.IsChecked == true)
+                                if (checkBox.IsChecked ?? false)
                                 {
                                     //remove task with task.name equal to checkBox.name from personTasksCopy
                                     foreach (Task task in personTasksCopy)
                                     {
-                                        if (checkBox.IsChecked == true && checkBox.Name.Equals(task.TaskName))
+                                        if ((checkBox.IsChecked ?? false) && checkBox.Name.Equals(task.TaskName))
                                         {
                                             person.Tasks.Remove(task);
                                         }
                                     }
-                                    //regenerate checkboxes 
-                                    ShowTaskList(person.Tasks);
                                 }
                             }
+                            ShowTaskList(person.Tasks);
                         }
                     }
                 }
             }
-
             //regenerate list of users if buttonstackpanel visible
             if (ButtonStackPanel.Visibility == Visibility.Visible)
             {
@@ -551,7 +520,7 @@ namespace TaskSlateApp
                         foreach (Task task in person.Tasks)
                         {
                             //if task.name matches checkbox text/content and if alarmtime != "OFF"
-                            if (checkBox.Name.Equals(task.TaskName) && !task.AlarmTime.Equals("OFF"))
+                            if ((checkBox.IsChecked ?? false) && checkBox.Name.Equals(task.TaskName) && !task.AlarmTime.Equals("OFF"))
                             {
                                 //stop alarm playing ringtone at end of ringtone
                                 task.AlarmSet = false;
