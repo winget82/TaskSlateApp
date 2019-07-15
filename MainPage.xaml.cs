@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
-using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using System.Runtime.Serialization;
-using System.Xml.Serialization;
 using Windows.Storage.Streams;
-using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -346,9 +335,6 @@ namespace TaskSlateApp
 
             //get text input from AddTextEntryBox upon click
             string text = AddTextEntryBox.Text;
-
-            //WILL NEED TO FIX BUG HERE - PREVENT USING THE SAME NAME TWICE
-            //BECAUSE WHEN REMOVED, IT WILL REMOVE BOTH SINCE NAMED THE SAME
 
             //clear text in addtextentrybox
             AddTextEntryBox.Text = clearText;
