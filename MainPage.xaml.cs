@@ -129,6 +129,23 @@ namespace TaskSlateApp
             }
         }
 
+        private void RefreshPersonButtonsList(List<Person> slateUsers)
+        {
+            foreach (Person person in slateUsers)
+            {
+                Button button = new Button();
+                button.Name = person.Name;
+                button.Content = person.Name;
+                button.Height = 32;
+                button.MinWidth = 340;
+                button.Foreground = new SolidColorBrush(Colors.White);
+                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
+                button.Click += new RoutedEventHandler(ActiveUserButton_Click);
+
+                ButtonStackPanel.Children.Add(button);
+            }
+        }
+
         private void ClearScreen()
         {
             CheckBoxStackPanel.Children.Clear();
@@ -216,22 +233,7 @@ namespace TaskSlateApp
             AddButtonText.Text = "Add Person";
             RemoveButtonText.Text = "Remove Active Person";
 
-            foreach (Person person in slateUsers)
-            {
-                Button button = new Button();
-                button.Name = person.Name;
-                button.Content = person.Name;
-                button.Height = 32;
-                button.MinWidth = 340;
-                button.Foreground = new SolidColorBrush(Colors.White);
-                button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
-                button.Click += new RoutedEventHandler(ActiveUserButton_Click);
-
-                ButtonStackPanel.Children.Add(button);
-
-                //Add button to person menu to rename person, add button to person menu to delete person
-                //RENAME button is extra functionallity save it for last if time allows
-            }
+            RefreshPersonButtonsList(slateUsers);
         }
 
         private void CalendarButton_Click(object sender, RoutedEventArgs e)
@@ -308,20 +310,8 @@ namespace TaskSlateApp
             {
                 ClearScreen();
                 ShowAddRemoveButtons();
+                RefreshPersonButtonsList(slateUsers);
 
-                foreach (Person person in slateUsers)
-                {
-                    Button button = new Button();
-                    button.Name = person.Name;
-                    button.Content = person.Name;
-                    button.Height = 32;
-                    button.MinWidth = 340;
-                    button.Foreground = new SolidColorBrush(Colors.White);
-                    button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
-                    button.Click += new RoutedEventHandler(ActiveUserButton_Click);
-
-                    ButtonStackPanel.Children.Add(button);
-                }
                 //set new active person to index[0] of slate users if any person left
                 if (slateUsers.Count >= 1)
                 {
@@ -390,21 +380,7 @@ namespace TaskSlateApp
                 //refresh person buttons
                 ClearScreen();
                 ShowAddRemoveButtons();
-
-                foreach (Person person in slateUsers)
-                {                    
-                    Button button = new Button();
-                    button.Name = person.Name;
-                    button.Content = person.Name;
-                    button.Height = 32;
-                    button.MinWidth = 340;
-                    button.Foreground = new SolidColorBrush(Colors.White);
-                    button.Background = this.Resources["ButtonGradient"] as LinearGradientBrush;
-                    button.Click += new RoutedEventHandler(ActiveUserButton_Click);
-
-                    ButtonStackPanel.Children.Add(button);
-                }
-
+                RefreshPersonButtonsList(slateUsers);
             }
             else if (CheckBoxStackPanel.Visibility == Visibility.Visible)
             {
