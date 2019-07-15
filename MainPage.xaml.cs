@@ -8,6 +8,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using Windows.Storage.Streams;
+using Windows.UI.Text;
+using Windows.UI.Xaml.Shapes;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -486,19 +488,13 @@ namespace TaskSlateApp
                                 //stop alarm playing ringtone at end of ringtone
                                 task.AlarmSet = false;
                                 task.AlarmTime = "OFF";
-
-                                //strikethrough text
-
                             }
                             foreach (Button button in TaskAlarmsStackPanel.Children)
                             {
                                 if (checkBox.Name.Equals(button.Name) && button.Name.Equals(task.TaskName) && task.AlarmTime.Equals("OFF"))
                                 {
                                     //stop alarm playing ringtone at end of ringtone
-                                    button.Content = "OFF";
-
-                                    //strikethrough text
-
+                                    button.Content = "OFF";                                                                       
                                 }
                             }
                         }
@@ -507,15 +503,6 @@ namespace TaskSlateApp
                 }
             }
             writePersonObjects();
-
-            //Change font to strikethrough text
-            /*
-            CheckBox senderButtonName = (sender as CheckBox);
-            //NOT WORKING - EXTRA FUNCTIONALITY SAVE FOR LAST
-            senderButtonName.Content = TextDecorations.Strikethrough;
-            //need a way to access the text block "CheckBoxText" within the check box "TaskCheckBox"
-            //of each of the generated checkboxes
-            */
         }
 
         private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -524,18 +511,6 @@ namespace TaskSlateApp
             {                
                 if (person.IsActivePerson)
                 {
-                    foreach (CheckBox checkBox in CheckBoxStackPanel.Children)
-                    {                  
-                        foreach (Task task in person.Tasks)
-                        {
-                            //if task.name matches checkbox text/content and if alarmtime != "OFF"
-                            if (checkBox.Name.Equals(task.TaskName))
-                            {
-                                //unstrikethrough text
-
-                            }                            
-                        }
-                    }
                     ClearScreen();
                     ShowTaskList(person.Tasks);
                 }

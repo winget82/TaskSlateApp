@@ -63,12 +63,7 @@
 
         <!--Stack panel for task lists, etc.-->
         <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Left" Height="383" Margin="140,120,0,0" VerticalAlignment="Top" Width="210">
-            <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked" Width="248" VerticalAlignment="Top">
-                <CheckBox.Content>
-                    <!--come back to strikethrough styling later if you have time, prioritize main aspects first-->
-                    <TextBlock x:Name="CheckBoxText" Text="Task" TextDecorations="Strikethrough" Height="31" Margin="10,120,10,0" HorizontalAlignment="Stretch" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FocusVisualPrimaryBrush="White"/>
-                </CheckBox.Content>
-            </CheckBox>
+            <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked" Width="199"/>
         </StackPanel>
 
         <StackPanel x:Name="TaskAlarmsStackPanel" HorizontalAlignment="Left" Height="379" Margin="10,120,0,0" VerticalAlignment="Top" Width="140">
@@ -187,7 +182,7 @@
 
         <!--MediaElement for alarm-->
         <MediaElement x:Name="SoundPlayer" AutoPlay="True"/>
-        
+
         <StackPanel x:Name="AlarmSettingsStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <Button x:Name="MacGuyver" Style="{StaticResource PersonButtonStyle}" Content="MacGuyver" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20" Click="MacGuyver_Click">
                 <Button.Background>
