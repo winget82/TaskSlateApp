@@ -26,6 +26,7 @@ namespace TaskSlateApp
 {
     /// <summary>
     /// An app for keeping track of tasks to do for one to many people on the same app, no login required
+    /// Currently not set up for phone or tablet use
     /// </summary>
 
     public sealed partial class MainPage : Page
@@ -64,7 +65,7 @@ namespace TaskSlateApp
             PersonAndDate.Text = "";
             MainTextBlock.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
-            MainTextBlock.Text = "Welcome to TaskSlate!!!";//Here's a string to globalize for requirement
+            MainTextBlock.Text = "Welcome to TaskSlate!!!";
         }
 
         private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
@@ -76,7 +77,7 @@ namespace TaskSlateApp
                 //play sound looping until click button to stop
                 SoundPlayer.Source = soundSourceFileLocation;
 
-                //stop alarm by checking task
+                //you can stop alarm loop by checking task
             }
         }
 
@@ -84,6 +85,7 @@ namespace TaskSlateApp
         {
             //task check boxes need to be generated dynamically
             //the code below adds a checkbox for each task in the tasklist
+            //and an alarm button on the side of it
             ClearScreen();
             ButtonStackPanel.Visibility = Visibility.Collapsed;
             ShowAddRemoveButtons();
@@ -132,6 +134,7 @@ namespace TaskSlateApp
             CheckBoxStackPanel.Children.Clear();
             ButtonStackPanel.Children.Clear();
             TaskAlarmsStackPanel.Children.Clear();
+            
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
             AddTextRelativePanel.Visibility = Visibility.Collapsed;
             MainTextBlock.Visibility = Visibility.Collapsed;
@@ -227,7 +230,7 @@ namespace TaskSlateApp
                 ButtonStackPanel.Children.Add(button);
 
                 //Add button to person menu to rename person, add button to person menu to delete person
-                //RENAME button is extra functionallity save it for last
+                //RENAME button is extra functionallity save it for last if time allows
             }
         }
 
@@ -432,6 +435,7 @@ namespace TaskSlateApp
         private void AlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
         {
             TaskSlateCalendar.Visibility = Visibility.Collapsed;
+
             //get time from time picker
             TimeSpan timeSpan = AlarmTimePicker.SelectedTime.Value;
             DateTime time = DateTime.Today.Add(timeSpan);
@@ -507,10 +511,6 @@ namespace TaskSlateApp
 
         private void TaskCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            //set task.alarmset to false and stop alarm playing
-
-            //SOMETHING NOT RIGHT IN THE LOGIC OF LOOPS BELOW, IT EVENTUALLY SETS ALL ALARM TIMES TO OFF FOR EACH TASK
-
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -519,7 +519,6 @@ namespace TaskSlateApp
                     {
                         foreach (Task task in person.Tasks)
                         {
-                            //if task.name matches checkbox text/content and if alarmtime != "OFF"
                             if ((checkBox.IsChecked ?? false) && checkBox.Name.Equals(task.TaskName) && !task.AlarmTime.Equals("OFF"))
                             {
                                 //stop alarm playing ringtone at end of ringtone
@@ -531,7 +530,6 @@ namespace TaskSlateApp
                             }
                             foreach (Button button in TaskAlarmsStackPanel.Children)
                             {
-                                //if task.name matches checkbox text/content and if alarmtime != "OFF"
                                 if (checkBox.Name.Equals(button.Name) && button.Name.Equals(task.TaskName) && task.AlarmTime.Equals("OFF"))
                                 {
                                     //stop alarm playing ringtone at end of ringtone
@@ -585,7 +583,6 @@ namespace TaskSlateApp
 
         private void MacGuyver_Click(object sender, RoutedEventArgs e)
         {
-            //new Uri("ms-appx:///Assets/macguyver.mp3");
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -597,7 +594,6 @@ namespace TaskSlateApp
 
         private void ZorasDomain_Click(object sender, RoutedEventArgs e)
         {
-            //new Uri("ms-appx:///Assets/zoras_domain.mp3");
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -609,7 +605,6 @@ namespace TaskSlateApp
 
         private void Tropical_Click(object sender, RoutedEventArgs e)
         {
-            //new Uri("ms-appx:///Assets/tropical_iphone.mp3");
             foreach (Person person in slateUsers)
             {
                 if (person.IsActivePerson)
@@ -645,7 +640,6 @@ namespace TaskSlateApp
             List<Person> slateUsersReadList = new List<Person>();
             var Serializer = new DataContractSerializer(typeof(List<Person>));
             using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync("SlateUsers"))
-
             {
                 slateUsersReadList = (List<Person>)Serializer.ReadObject(stream);
             }
@@ -654,7 +648,17 @@ namespace TaskSlateApp
 
             if (slateUsers.Count != 0)
             {
-                slateUsers[0].IsActivePerson = true;
+                for (int i=0; i < slateUsers.Count; i++)
+                {
+                    if (i==0)
+                    {
+                        slateUsers[i].IsActivePerson = true;
+                    }
+                    else
+                    {
+                        slateUsers[i].IsActivePerson = false;
+                    }
+                }
             }
             else if (slateUsers.Count == 0)
             {
@@ -674,7 +678,6 @@ namespace TaskSlateApp
                 //ShowTaskList(defaultPerson.Tasks);
             }
         }
-
     }
 
     [DataContract]
@@ -711,7 +714,7 @@ namespace TaskSlateApp
         
         [DataMember]
         public bool IsComplete { get; set; }
-        //reocurrence could add new instances of object?
+        //reocurrence could add new instances of object
 
         [DataMember]
         public string AlarmTime { get; set; }
