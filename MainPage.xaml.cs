@@ -8,6 +8,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using Windows.Storage.Streams;
+using Windows.ApplicationModel.Resources;
+using System.Threading;
+using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -32,6 +35,14 @@ namespace TaskSlateApp
         {
             this.InitializeComponent();
 
+            //Add a connection to the resource file
+            var loader = new ResourceLoader();
+
+            //Use loader to grab strings base on their "Name" value in the resource file
+            var addTaskLocalizedText = loader.GetString("welcome");
+            //https://docs.microsoft.com/en-us/windows/uwp/app-resources/localize-strings-ui-manifest
+
+
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
             dtClockTime.Tick += new EventHandler<object>(DtClockTime_Tick);
@@ -46,15 +57,15 @@ namespace TaskSlateApp
             ReadPersonObjects();
             ClearScreen();
             
-            InitialLoad();
+            InitialLoad(addTaskLocalizedText);
         }
 
-        private void InitialLoad()
+        private void InitialLoad(string title)
         {
             PersonAndDate.Text = "";
             MainTextBlock.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
-            MainTextBlock.Text = "Welcome to TaskSlate!!!";
+            MainTextBlock.Text = title;
         }
 
         private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
