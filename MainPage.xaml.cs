@@ -8,8 +8,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using Windows.Storage.Streams;
-using Windows.UI.Text;
-using Windows.UI.Xaml.Shapes;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -45,7 +43,7 @@ namespace TaskSlateApp
             alarmClockTime.Tick += new EventHandler<object>(AlarmClockTime_Tick);
             alarmClockTime.Start();
             
-            readPersonObjects();
+            ReadPersonObjects();
             ClearScreen();
             
             InitialLoad();
@@ -72,7 +70,7 @@ namespace TaskSlateApp
             }
         }
 
-        private void ShowTaskList(List<Task> Tasks)//need to pass active person.tasks in here
+        private void ShowTaskList(List<Task> tasks)//need to pass active person.tasks in here
         {
             //task check boxes need to be generated dynamically
             //the code below adds a checkbox for each task in the tasklist
@@ -82,14 +80,14 @@ namespace TaskSlateApp
             ShowAddRemoveButtons();
             AddButtonText.Text = "Add Task";
             RemoveButtonText.Text = "Remove Checked Task(s)";
-            RefreshTaskAlarmCheckboxList(Tasks);
-            RefreshTaskAlarmButtonsList(Tasks);
+            RefreshTaskAlarmCheckboxList(tasks);
+            RefreshTaskAlarmButtonsList(tasks);
         }
 
-        private void RefreshTaskAlarmCheckboxList(List<Task> Tasks)
+        private void RefreshTaskAlarmCheckboxList(List<Task> tasks)
         {
             CheckBoxStackPanel.Children.Clear();
-            foreach (Task task in Tasks)
+            foreach (Task task in tasks)
             {
                 CheckBox checkbox = new CheckBox();
                 checkbox.Name = task.TaskName;
@@ -103,10 +101,10 @@ namespace TaskSlateApp
             }
         }
 
-        private void RefreshTaskAlarmButtonsList(List<Task> Tasks)
+        private void RefreshTaskAlarmButtonsList(List<Task> tasks)
         {
             TaskAlarmsStackPanel.Children.Clear();
-            foreach (Task task in Tasks)
+            foreach (Task task in tasks)
             {
                 Button button = new Button();
                 button.Name = task.TaskName;
@@ -309,7 +307,7 @@ namespace TaskSlateApp
                     slateUsers[0].IsActivePerson = true;
                 }
             }
-            writePersonObjects();
+            WritePersonObjects();
         }
 
         private void ActiveUserButton_Click(object sender, RoutedEventArgs e)
@@ -386,7 +384,7 @@ namespace TaskSlateApp
             }            
             AddTextEntryBox.Visibility = Visibility.Visible;
             AddTextEntryButton.Visibility = Visibility.Visible;
-            writePersonObjects();
+            WritePersonObjects();
         }
 
         private void TaskAlarmButton_Click(object sender, RoutedEventArgs e)
@@ -428,7 +426,7 @@ namespace TaskSlateApp
                     }
                 }
             }
-            writePersonObjects();
+            WritePersonObjects();
         }
 
         private void CalendarAlarmTimePickerButton_Click(object sender, RoutedEventArgs e)
@@ -502,7 +500,7 @@ namespace TaskSlateApp
                     RefreshTaskAlarmButtonsList(person.Tasks);
                 }
             }
-            writePersonObjects();
+            WritePersonObjects();
         }
 
         private void TaskCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -515,7 +513,7 @@ namespace TaskSlateApp
                     ShowTaskList(person.Tasks);
                 }
             }
-            writePersonObjects();
+            WritePersonObjects();
         }
 
         private void MacGuyver_Click(object sender, RoutedEventArgs e)
@@ -551,7 +549,7 @@ namespace TaskSlateApp
             }
         }
 
-        public async void writePersonObjects()
+        public async void WritePersonObjects()
         {
             StorageFile slateUsersFile = await ApplicationData.Current.LocalFolder.CreateFileAsync
                 ("SlateUsers", CreationCollisionOption.ReplaceExisting);
@@ -571,7 +569,7 @@ namespace TaskSlateApp
             }
         }
 
-        public async void readPersonObjects()
+        public async void ReadPersonObjects()
         {
             slateUsers.Clear();
             List<Person> slateUsersReadList = new List<Person>();
@@ -638,7 +636,6 @@ namespace TaskSlateApp
             Name = name;
             Tasks = tasks ?? new List<Task>();//set constructor to generate a new empty task list
             IsActivePerson = activePerson;
-            //AlarmSetting
             AlarmFileSetting = new Uri("ms-appx:///Assets/macguyver.mp3");
         }
     }

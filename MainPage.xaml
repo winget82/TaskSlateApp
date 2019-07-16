@@ -61,11 +61,12 @@
             <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;"/>
         </Button>
 
-        <!--Stack panel for task lists, etc.-->
+        <!--Stack panel for task list checkboxes-->
         <StackPanel x:Name="CheckBoxStackPanel" HorizontalAlignment="Left" Height="383" Margin="140,120,0,0" VerticalAlignment="Top" Width="210">
             <CheckBox x:Name="TaskCheckBox" Height="31" Margin="10,120,10,0" HorizontalAlignment="Left" FontFamily="Segoe UI" FontSize="20" Foreground="White" Padding="8,2,0,0" FontStyle="Normal" FocusVisualPrimaryBrush="White" Background="{x:Null}" BorderBrush="{x:Null}" Checked="TaskCheckBox_Checked" Width="199"/>
         </StackPanel>
 
+        <!--Stack panel for task alarm buttons-->
         <StackPanel x:Name="TaskAlarmsStackPanel" HorizontalAlignment="Left" Height="379" Margin="10,120,0,0" VerticalAlignment="Top" Width="140">
             <Button Style="{StaticResource PersonButtonStyle}" Content="99:99" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="14" FontStretch="SemiCondensed" Click="TaskAlarmButton_Click">
                 <Button.Background>
@@ -123,6 +124,7 @@
             </Button>
         </RelativePanel>
 
+        <!--Alarm time picker-->
         <RelativePanel x:Name="AlarmTimePickerGrid" HorizontalAlignment="Center" Height="60" Margin="0,0,0,76" VerticalAlignment="Bottom" Width="340">
             <TimePicker x:Name="AlarmTimePicker" HorizontalAlignment="Center"/>
             <Button x:Name="AlarmTimePickerButton" Content="Add" RelativePanel.RightOf="AlarmTimePicker" Height="32" Width="67" FontSize="18" VerticalAlignment="Center" Click="AlarmTimePickerButton_Click">
@@ -135,6 +137,7 @@
             </Button>
         </RelativePanel>
 
+        <!--Add & Remove Buttons at bottom-->
         <Button x:Name="AddButton" Content="+" Height="26" Margin="10,0,0,45" VerticalAlignment="Bottom" Width="25" FontFamily="Times New Roman" Click="AddButton_Click" FontSize="20" Padding="0,0,0,0">
             <Button.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -171,6 +174,7 @@
             </TextBlock.Foreground>
         </TextBlock>
 
+        <!--Main text block-->
         <TextBlock x:Name="MainTextBlock" HorizontalAlignment="Center" Height="379" Margin="0,120,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" FocusVisualPrimaryBrush="#FFF7F3F3" FontSize="48" TextAlignment="Center" FontFamily="Segoe UI" FontStyle="Italic">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -183,6 +187,7 @@
         <!--MediaElement for alarm-->
         <MediaElement x:Name="SoundPlayer" AutoPlay="True"/>
 
+        <!--Stack Panel for choosing alarm sound-->
         <StackPanel x:Name="AlarmSettingsStackPanel" HorizontalAlignment="Center" Height="383" Margin="0,120,0,0" VerticalAlignment="Top" Width="340">
             <Button x:Name="MacGuyver" Style="{StaticResource PersonButtonStyle}" Content="MacGuyver" HorizontalAlignment="Stretch" Foreground="White" FontWeight="Bold" FontSize="20" Click="MacGuyver_Click">
                 <Button.Background>
