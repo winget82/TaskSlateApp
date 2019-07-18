@@ -334,7 +334,7 @@ namespace TaskSlateApp
                 if (senderButtonName.Equals(person.Name.ToString()))//(name of person on button clicked matches the name of a person in person list)
                 {
                     person.IsActivePerson = true;
-                    PersonAndDate.Text = senderButtonName + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                    PersonAndDate.Text = senderButtonName + " - " + DateTime.Now.ToString("G");
                 }
                 else
                 {
