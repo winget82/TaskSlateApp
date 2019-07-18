@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="currentCultureLocalized" xml:space="preserve">
+    <value>Ihre aktuelle Kultur ist</value>
+    <comment>"Your current culture is" in German</comment>
+  </data>
   <data name="welcome" xml:space="preserve">
     <value>Willkommen bei Task Schiefer</value>
     <comment>Opening screen text in German</comment>

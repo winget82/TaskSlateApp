@@ -9,7 +9,6 @@ using Windows.UI.Xaml.Media;
 using System.Runtime.Serialization;
 using Windows.Storage.Streams;
 using Windows.ApplicationModel.Resources;
-using System.Threading;
 using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -40,8 +39,11 @@ namespace TaskSlateApp
 
             //Use loader to grab strings base on their "Name" value in the resource file
             var addTaskLocalizedText = loader.GetString("welcome");
+            var currentCultureLocalizedText = loader.GetString("currentCultureLocalized");
             //https://docs.microsoft.com/en-us/windows/uwp/app-resources/localize-strings-ui-manifest
 
+            CultureInfo currentCulture = CultureInfo.CurrentCulture;//get current culture information of user
+            //https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture?view=netframework-4.8
 
             DispatcherTimer dtClockTime = new DispatcherTimer();
             dtClockTime.Interval = new TimeSpan(0, 0, 1);
@@ -57,15 +59,15 @@ namespace TaskSlateApp
             ReadPersonObjects();
             ClearScreen();
             
-            InitialLoad(addTaskLocalizedText);
+            InitialLoad(addTaskLocalizedText, currentCulture, currentCultureLocalizedText);
         }
 
-        private void InitialLoad(string title)
+        private void InitialLoad(string title, CultureInfo currentCulture, string currentCultureLocalizedText)
         {
             PersonAndDate.Text = "";
             MainTextBlock.Visibility = Visibility.Visible;
             CollapseAddRemoveButtons();
-            MainTextBlock.Text = title;
+            MainTextBlock.Text = title + "\n\n" + currentCultureLocalizedText + "\n" + currentCulture.Name;
         }
 
         private void PlayAlarm(DateTime currentTime, DateTime taskAlarmDateTime, Uri soundSourceFileLocation)
@@ -187,7 +189,8 @@ namespace TaskSlateApp
             {
                 if (person.IsActivePerson)
                 {
-                    PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("MM/dd/yyyy");
+                    PersonAndDate.Text = person.Name.ToString() + " - " + DateTime.Now.ToString("G");//Get a string that displays the date and time in the current culture's short date and time format
+                    //https://docs.microsoft.com/en-us/dotnet/api/system.datetime.tostring?view=netframework-4.8
                 }
             }
         }
