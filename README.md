@@ -17,17 +17,34 @@ such as strike through text (tasks can simply be removed one or several at a tim
 save button was not needed (saved automatically during any changes), active user at startup (everyone's alarms will activate regardless of who is active within
 10 seconds of alarm time).
 
+Target version supported: Windows 10, version 1809 (10.0; Build 17763)
+Minimum version supported: Windows 10 Creators Update (10.0; Build 15063)
+
+
 How to install / installation:
 ------------------------------
-////*****************************************ADD INSTALLATION INSTRUCTIONS HERE******************************************\\\\
+Click on start menu icon, type in developer settings, and change settings to developer mode, you will need to sideload the app.
 
-If you'd like to not install this way, the code is located here if you want to clone and run yourself: https://github.com/winget82/TaskSlateApp
+In the TaskSlateApp_1.0.0.0_Debug_Test folder, go to Add-AppDevPackage.ps1 and right-click and run with powershell, click yes
+and install it (https://www.c-sharpcorner.com/article/packaging-and-side-loading-windows-10-uwp-apps/)
+
+Also see article here - https://www.howtogeek.com/285410/how-to-install-.appx-or-.appxbundle-software-on-windows-10/
+
+If you do not want to install this way, the code is located here if you want to clone the code and run it yourself
+in visual studio:
+
+https://github.com/winget82/TaskSlateApp
+
+You'll need to clone it, build it, and run it.
+
+If you still cannot get it to work, see my short youtube video demo here (https://youtu.be/EKgRVVx0fcc), and you'll see its functionallity.
+
 
 SCENARIOS
 =========
 
 (Original scenarios):
----------------------
+.....................
 Zack
 ----
 1.	Zack opens the app and it opens on Ellen’s home screen because she was the last person to use it.  Zack clicks the person icon at the top.
