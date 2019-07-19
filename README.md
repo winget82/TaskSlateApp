@@ -27,7 +27,7 @@ SCENARIOS
 =========
 
 (Original scenarios):
-.....................
+---------------------
 Zack
 ----
 1.	Zack opens the app and it opens on Ellen’s home screen because she was the last person to use it.  Zack clicks the person icon at the top.
